@@ -5,6 +5,8 @@ import makeManifest from "./utils/plugins/make-manifest";
 import customDynamicImport from "./utils/plugins/custom-dynamic-import";
 import addHmr from "./utils/plugins/add-hmr";
 import manifest from "./manifest";
+import { createStyleImportPlugin, AntdResolve } from 'vite-plugin-style-import';
+
 
 const root = resolve(__dirname, "src");
 const pagesDir = resolve(root, "pages");
@@ -34,7 +36,18 @@ export default defineConfig({
     }),
     customDynamicImport(),
     addHmr({ background: enableHmrInBackgroundScript, view: true }),
+    createStyleImportPlugin({
+      resolves: [AntdResolve()] 
+    }) 
   ],
+  css: {
+    preprocessorOptions: {
+      less: {
+        // 支持内联 JavaScript
+        javascriptEnabled: true,
+      }
+    }
+  },
   publicDir,
   build: {
     outDir,
