@@ -13,17 +13,84 @@
 
 </div>
 
+## 项目功能
+
+**书签管理**
+- 书签搜索
+  - [ ] 默认按照 【近期一周】 添加的 书签进行搜索；对筛选条件【收藏日期】设置初始值为最近一周；
+  - 根据不同的筛选条件进行搜索；
+    - [ ] 书签名；
+    - [ ] 按来源分类；
+    - [ ] 收藏日期；
+  - [ ] 分页搜索、跳转页面；
+
+- 修改书签
+  - [x] 修改 书签自带属性：书签名，链接；
+  - [ ] 修改 书签自定义属性：自定义描述，来源；
+  - [ ] 上述修改书签，考虑数据持久化，存储在 storage 中，支持多端同步；
+
+- 列表展示优化：
+  - [ ] 链接和标题，定义最大宽度，超长省略；
+
+- 创建片段
+  - [ ] 可设置一张主图，图片来源参考 必应的 主题图片；
+  - [ ] 可设置片段名；
+  - [ ] 可预览添加的 书签列表；
+  - [ ] 数据保存在 storage 中，支持多端同步；
+
+**片段管理**
+
+- 片段搜索
+  - [ ] 按照片段名、创建日期 筛选条件搜索；【创建日期】默认值为最近一周；
+  - [ ] 默认搜索展示 最近一周数据；
+- 查看详情
+  - [ ] 删除单行书签；
+  - [ ] 支持书签上下拖拽排序
+- 列表：多选 片段，创建日报；
+  - [ ] 进入创建日报详情页，里面是左右2侧看板，左边是 markdown 的书签和片段；右侧是预览；
+
+**日报管理**
+
+- 日报搜索
+  - 筛选条件：
+    - [ ] 日报名称；
+    - [ ] 创建时间；
+- 列表页：
+  - [ ] 列表行，操作列可单个编辑，支持编辑日报，跳转至日报编辑页面；
+
+
+**模板管理**
+
+拥有多个子菜单，分为如下：
+- 片段模板
+- 日报模板
+- 周报模板；
+
+**数据同步管理**
+
+支持同步多个博客平台的浏览记录：
+
+- 掘金
+- 博客园
+- CSDN
+- 思否
+- 知乎
+
 ## Table of Contents
 
-- [Intro](#intro)
-- [Features](#features)
-- [Installation](#installation)
-  - [Procedures](#procedures)
-- [Screenshots](#screenshots)
-  - [NewTab](#newtab)
-  - [Popup](#popup)  
-- [Sample](#sample)
-- [Documents](#documents)
+- [项目功能](#项目功能)
+- [Table of Contents](#table-of-contents)
+- [Intro ](#intro-)
+- [Features ](#features-)
+- [Installation ](#installation-)
+  - [Procedures ](#procedures-)
+- [Screenshots ](#screenshots-)
+  - [New Tab ](#new-tab-)
+  - [Popup ](#popup-)
+- [Sample ](#sample-)
+- [Documents ](#documents-)
+- [Star History](#star-history)
+- [Thanks To](#thanks-to)
 
 ## Intro <a name="intro"></a>
 This boilerplate is made for creating chrome extensions using React and Typescript.
