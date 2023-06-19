@@ -24,7 +24,7 @@
   },
   "devDependencies": {
     "@ant-design/icons": "^5.1.4",
-    "@rollup/plugin-typescript": "^8.5.0",
+    "@rollup/plugin-typescript": "^11.1.1",
     "@testing-library/react": "13.4.0",
     "@types/chrome": "0.0.224",
     "@types/jest": "29.0.3",
