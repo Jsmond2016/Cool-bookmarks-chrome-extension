@@ -15,6 +15,11 @@ const addCustomAttributes = (list = []) =>
     source: sourceRender(item.url),
   }));
 
+  /**
+   * 在 片段 模块找到 片段笔记；
+   * 
+   * @returns 
+   */
 const querySectionNotes = async () => {
   const { getStorage } = useStorage();
   const data = await getStorage("section");
