@@ -12,7 +12,7 @@ import {
 import dayjs from "dayjs";
 import type { Dayjs } from "dayjs";
 import { useEffect, useState } from "react";
-import useSectionModal from "../bookmarks/hooks/useSectionModal";
+import useSectionModal, { ModeEnum } from "../bookmarks/hooks/useSectionModal";
 import * as api from "../../api";
 
 const formItemLayout = {
@@ -79,7 +79,7 @@ const Index = () => {
     {
       title: "书签详情",
       dataIndex: "list",
-      render: (value) => <a onClick={() => editSectionModal(value, 'PREVIEW')}>点击查看详情</a>,
+      render: (value) => <a onClick={() => editSectionModal(value, ModeEnum.PREVIEW)}>点击查看详情</a>,
     },
   ];
 

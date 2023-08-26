@@ -131,7 +131,7 @@ const DefaultPreveiwList = ({ list }) => (
   />
 );
 
-enum ModeEnum {
+export enum ModeEnum {
   EDIT = "EDIT",
   PREVIEW = "PREVIEW",
 }
