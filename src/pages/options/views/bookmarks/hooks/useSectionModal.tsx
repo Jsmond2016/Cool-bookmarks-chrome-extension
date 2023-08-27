@@ -1,5 +1,15 @@
 import { useState } from "react";
-import { Modal, List, Input, Form, message } from "antd";
+import {
+  Modal,
+  List,
+  Input,
+  Form,
+  message,
+  Space,
+  Button,
+  Row,
+  Col,
+} from "antd";
 import * as api from "../../../api";
 import { buildShortUUID } from "../../../utils";
 import { IBookMark } from "..";
@@ -19,6 +29,7 @@ import {
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
+import { DragOutlined, MinusCircleOutlined } from "@ant-design/icons";
 
 type Item = {
   dateAdded: number;
@@ -36,22 +47,56 @@ type Item = {
 
 type SortTableItemProps = {
   item: Item;
+  removeItem: (item: Item) => void;
 };
 
 function SortableItem(props: SortTableItemProps) {
-  const { item } = props;
-  const { attributes, listeners, setNodeRef, transform, transition } =
-    useSortable({ id: item.id });
+  const { item, removeItem } = props;
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    setActivatorNodeRef,
+    transform,
+    transition,
+  } = useSortable({ id: item.id });
 
   const style = {
-    cursor: "move",
     transform: CSS.Transform.toString(transform),
     transition,
   };
 
+  const iconStyles = {
+    cursor: "move",
+    fontSize: "16px",
+    color: "blue",
+  };
+
+  // 拖拽实现 https://docs.dndkit.com/presets/sortable/usesortable
   return (
-    <List.Item ref={setNodeRef} style={style} {...attributes} {...listeners}>
-      <a href={item.url}>{item.bookmarkName}</a>
+    <List.Item ref={setNodeRef} style={style} {...attributes}>
+      <Row justify="space-between" align="middle" style={{ width: "100%" }}>
+        <Col flex="20px">
+          <DragOutlined
+            ref={setActivatorNodeRef}
+            {...listeners}
+            rev={undefined}
+            style={iconStyles}
+          />
+        </Col>
+        <Col flex="auto">
+          <a href={item.url}>{item.bookmarkName}</a>
+        </Col>
+        <Col flex="20px">
+          <MinusCircleOutlined
+            onClick={() => {
+              removeItem(item);
+            }}
+            style={{ fontSize: "16px", color: "#ff4d4f", cursor: "pointer" }}
+            rev={undefined}
+          />
+        </Col>
+      </Row>
     </List.Item>
   );
 }
@@ -96,7 +141,12 @@ function DndList({ items, setItems }) {
         return arrayMove(items, oldIndex, newIndex);
       });
     }
-  }
+  };
+
+  const removeItem = (item) => {
+    const newList = items.filter((v) => v.id !== item.id);
+    setItems(newList);
+  };
 
   return (
     <DndContext
@@ -111,7 +161,7 @@ function DndList({ items, setItems }) {
         <DefaultList
           list={items}
           renderItem={(item: Item) => (
-            <SortableItem key={item.id} item={item} />
+            <SortableItem removeItem={removeItem} key={item.id} item={item} />
           )}
         />
       </SortableContext>
@@ -122,12 +172,17 @@ function DndList({ items, setItems }) {
 const DefaultPreveiwList = ({ list }) => (
   <DefaultList
     list={list}
-    renderItem={(item: Item) =>
-      (
-        <List.Item>
+    renderItem={(item: Item) => (
+      <List.Item>
+        <Row justify="space-between">
           <a href={item.url}>{item.bookmarkName}</a>
-        </List.Item>
-      )}
+          <MinusCircleOutlined
+            style={{ fontSize: "16px", color: "#08c" }}
+            rev={undefined}
+          />
+        </Row>
+      </List.Item>
+    )}
   />
 );
 
@@ -163,17 +218,35 @@ const useSectionModal = () => {
     setVisible(true);
   };
 
+  const onCopyAll = async () => {
+    const text = list
+      .map(({ title, url }) => `- [${title}](${url})`)
+      .join("\n");
+    // refer: https://stackoverflow.com/questions/400212/how-do-i-copy-to-the-clipboard-in-javascript
+    // https://developer.mozilla.org/en-US/docs/Web/API/Clipboard/writeText
+    const res = await navigator.clipboard.writeText(text);
+    console.log("res: ", res);
+  };
+
+  const Footer = () =>
+    mode !== ModeEnum.PREVIEW ? (
+      <Space size="small" direction="horizontal">
+        <Button type="default" onClick={onCopyAll}>
+          拷贝
+        </Button>
+        <Button type="primary">确定</Button>
+      </Space>
+    ) : null;
+
   const ele = (
     <Modal
       title={mode === ModeEnum.EDIT ? "设置片段" : "片段详情"}
       open={visible}
-      footer={mode === ModeEnum.PREVIEW ? null : undefined}
       onOk={saveSection}
       onCancel={() => setVisible(false)}
       maskClosable={false}
       destroyOnClose
-      okText="确定"
-      cancelText="取消"
+      footer={<Footer />}
     >
       <Form form={form} preserve={false}>
         {mode === ModeEnum.EDIT && (

@@ -57,13 +57,13 @@ type IFilters = {
 /**
  * 按照条件查找最近的收藏的书签
  *
- * @param count number< 500
+ * @param count number< 5000
  * @returns
  */
 const queryBookmarksByRecent = async (filters: IFilters) => {
-  const { count = 500, ...restFilters } = filters;
-  const _count = Math.min(count, 1000);
-  const bookmarks = await chrome.bookmarks.getRecent(_count);
+  const { count = 5000, ...restFilters } = filters;
+  // const _count = Math.min(count, 1000);
+  const bookmarks = await chrome.bookmarks.getRecent(count);
 
   const filterFns = Object.keys(restFilters).map((key) => ({
     key,
@@ -124,6 +124,26 @@ const getSubTree = async () => {
   return res;
 };
 
+
+const logger = (type, info) => {
+  const { setStorage } = useStorage();
+  setStorage(`log-${type}`, info)
+}
+
+const removeBookmark = async (record: IBookMark) => {
+  logger('delete-item', record)
+  const res = await chrome.bookmarks.remove(record.id)
+  return res;
+}
+
+const batchRemove = async (records: IBookMark[]) => {
+  // const ids = records.map((item) => item.id);
+  logger('delete-list', records)
+  const removeFns = records.map(record => removeBookmark(record));
+  const res = await Promise.all(removeFns)
+  return res;
+}
+
 export {
   queryBookmarksByRecent,
   saveSection,
@@ -131,5 +151,7 @@ export {
   updateBookmark,
   getSubTree,
   getBookMarksByIds,
-  getGroupList
+  getGroupList,
+  removeBookmark,
+  batchRemove
 };

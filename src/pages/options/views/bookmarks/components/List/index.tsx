@@ -1,11 +1,9 @@
 import type { ColumnsType } from "antd/es/table";
 import { IBookMark, StoreContext } from "../..";
-import { useContext, useEffect, useMemo, useState } from "react";
+import { useContext,useMemo } from "react";
 import Table from "antd/es/table";
-import { PaginationProps } from 'antd';
-import { useStore } from '@src/pages/options/store';
-
-
+import { Button, Modal, PaginationProps, Space, message } from "antd";
+import { removeBookmark } from "@src/pages/options/api";
 
 export type IProps = {
   list: IBookMark[];
@@ -20,15 +18,39 @@ const List = (props: IProps) => {
   const { editBookmark, list, rowSelection } = props;
   const storeContext = useContext(StoreContext);
   const { store, dispatch } = storeContext;
-  console.log('store: ', store);
+  console.log("store: ", store);
 
   const groupListMap = useMemo(() => {
-   return store.groupList.reduce((pre, cur) => {
-      pre.set(cur.id, cur.title)
+    return store.groupList.reduce((pre, cur) => {
+      pre.set(cur.id, cur.title);
       return pre;
-    }, new Map())
-  }, [store])
-  
+    }, new Map());
+  }, [store]);
+
+  const copyBookmark = async (record: IBookMark) => {
+    const { url, title } = record;
+    const text = `- [${title}](${url})`;
+    // refer: https://stackoverflow.com/questions/400212/how-do-i-copy-to-the-clipboard-in-javascript
+    // https://developer.mozilla.org/en-US/docs/Web/API/Clipboard/writeText
+    const res = await navigator.clipboard.writeText(text);
+    console.log("res: ", res);
+    message.success('复制成功!')
+  };
+
+  const deleteBookmark = async (record: IBookMark) => {
+    Modal.confirm({
+      title: "确定删除吗？",
+      onOk: async () => {
+        // const { id } = record;
+        try {
+          await removeBookmark(record);
+          message.success("删除成功");
+        } catch (error) {
+          message.error("删除失败");
+        }
+      },
+    });
+  };
 
   // 书签名/链接/文章名/来源/自定义描述/
   const columns: ColumnsType<IBookMark> = [
@@ -61,7 +83,7 @@ const List = (props: IProps) => {
       title: "所属文件夹",
       dataIndex: "belongToDir",
       width: 120,
-      render: (v, record) => groupListMap.get(record.parentId)
+      render: (v, record) => groupListMap.get(record.parentId),
     },
     {
       title: "自定义描述",
@@ -73,11 +95,13 @@ const List = (props: IProps) => {
       dataIndex: "operation",
       width: 100,
       render: (v, record) => (
-        <div>
-          <p>
-            <a onClick={() => editBookmark(record)}>修改书签</a>
-          </p>
-        </div>
+        <Space size="small" direction="horizontal">
+          <Button type="link" onClick={() => copyBookmark(record)}>复制</Button>
+          <Button type="link" onClick={() => editBookmark(record)}>修改</Button>
+          <Button type="link" danger onClick={() => deleteBookmark(record)}>
+            删除
+          </Button>
+        </Space>
       ),
     },
   ];
@@ -86,13 +110,12 @@ const List = (props: IProps) => {
     0
   );
 
-  const showTotal: PaginationProps['showTotal'] = (total) => `总共 ${total} 条`;
-
+  const showTotal: PaginationProps["showTotal"] = (total) => `总共 ${total} 条`;
 
   const pagination = {
     total: list.length,
-    showTotal
-  }
+    showTotal,
+  };
 
   return (
     <Table
