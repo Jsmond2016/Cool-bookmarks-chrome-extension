@@ -101,6 +101,7 @@ const Bookmarks: React.FC = () => {
           editBookmark={editBookmarkModal}
           list={list}
           rowSelection={rowSelection}
+          refreshList={() => getBookmarks(filters)}
         />
         {sectionModal}
         {modalElement}

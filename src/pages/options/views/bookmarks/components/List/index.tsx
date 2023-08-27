@@ -1,9 +1,19 @@
 import type { ColumnsType } from "antd/es/table";
 import { IBookMark, StoreContext } from "../..";
-import { useContext,useMemo } from "react";
+import { useContext, useMemo } from "react";
 import Table from "antd/es/table";
-import { Button, Modal, PaginationProps, Space, message } from "antd";
+import {
+  Button,
+  Modal,
+  PaginationProps,
+  Space,
+  message,
+  Typography,
+  Tooltip,
+} from "antd";
 import { removeBookmark } from "@src/pages/options/api";
+
+const { Paragraph, Text } = Typography;
 
 export type IProps = {
   list: IBookMark[];
@@ -12,10 +22,11 @@ export type IProps = {
     onChange: (selectedRowKeys: React.Key[], selectedRows: IBookMark[]) => void;
     onSelectAll: (selected: any, selectedRows: any, changeRows: any) => void;
   };
+  refreshList: () => void;
 };
 
 const List = (props: IProps) => {
-  const { editBookmark, list, rowSelection } = props;
+  const { editBookmark, list, rowSelection, refreshList } = props;
   const storeContext = useContext(StoreContext);
   const { store, dispatch } = storeContext;
   console.log("store: ", store);
@@ -34,7 +45,7 @@ const List = (props: IProps) => {
     // https://developer.mozilla.org/en-US/docs/Web/API/Clipboard/writeText
     const res = await navigator.clipboard.writeText(text);
     console.log("res: ", res);
-    message.success('复制成功!')
+    message.success("复制成功!");
   };
 
   const deleteBookmark = async (record: IBookMark) => {
@@ -45,6 +56,7 @@ const List = (props: IProps) => {
         try {
           await removeBookmark(record);
           message.success("删除成功");
+          refreshList();
         } catch (error) {
           message.error("删除失败");
         }
@@ -58,6 +70,11 @@ const List = (props: IProps) => {
       title: "书签名",
       dataIndex: "title",
       width: 260,
+      render: (v) => (
+        <Tooltip title={v}>
+          <Paragraph ellipsis style={{width: '260px'}}>{v}</Paragraph>
+        </Tooltip>
+      ),
     },
     {
       title: "链接",
@@ -96,8 +113,12 @@ const List = (props: IProps) => {
       width: 100,
       render: (v, record) => (
         <Space size="small" direction="horizontal">
-          <Button type="link" onClick={() => copyBookmark(record)}>复制</Button>
-          <Button type="link" onClick={() => editBookmark(record)}>修改</Button>
+          <Button type="link" onClick={() => copyBookmark(record)}>
+            复制
+          </Button>
+          <Button type="link" onClick={() => editBookmark(record)}>
+            修改
+          </Button>
           <Button type="link" danger onClick={() => deleteBookmark(record)}>
             删除
           </Button>

@@ -69,7 +69,7 @@ function SortableItem(props: SortTableItemProps) {
   const iconStyles = {
     cursor: "move",
     fontSize: "16px",
-    color: "blue",
+    color: "#c1c1c1",
   };
 
   // 拖拽实现 https://docs.dndkit.com/presets/sortable/usesortable
@@ -226,6 +226,7 @@ const useSectionModal = () => {
     // https://developer.mozilla.org/en-US/docs/Web/API/Clipboard/writeText
     const res = await navigator.clipboard.writeText(text);
     console.log("res: ", res);
+    message.success('复制成功!')
   };
 
   const Footer = () =>
