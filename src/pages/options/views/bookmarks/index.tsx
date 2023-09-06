@@ -50,12 +50,13 @@ const Bookmarks: React.FC = () => {
 
   const batchDelete = async () => {
     // const ids = selectedRows.map((item) => item.id);
+    const titleNode = <span>确定删除<span style={{color: 'red', fontWeight: 'bold'}}>{selectedRows.length}条</span>书签吗???</span>
     Modal.confirm({
-      title: "确定删除这些书签吗???",
+      title: titleNode,
       onOk: async () => {
         try {
           await batchRemove(selectedRows);
-          message.success("批量删除成功");
+          message.success(`已删除${selectedRows.length}条书签`);
           await getBookmarks(filters);
         } catch (error) {
           message.error("批量删除失败");
