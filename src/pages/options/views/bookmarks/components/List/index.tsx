@@ -52,7 +52,6 @@ const List = (props: IProps) => {
     Modal.confirm({
       title: "确定删除吗？",
       onOk: async () => {
-        // const { id } = record;
         try {
           await removeBookmark(record);
           message.success("删除成功");

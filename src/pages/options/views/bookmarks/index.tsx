@@ -68,9 +68,7 @@ const Bookmarks: React.FC = () => {
   const { editSectionModal, ele: sectionModal } = useSectionModal();
 
   const { setStorage } = useStorage();
-  const testFn = () => {
-    setStorage("test", { a: 111 });
-  };
+
 
   return (
     // TODO: 这个 store 后续可以根据需要放在 App 组件上，让所有组件获取到 store 数据，跨菜单拿到 store 数据；
@@ -79,15 +77,14 @@ const Bookmarks: React.FC = () => {
         <Search setFilters={setFilters} />
         <Row justify="end">
           <Space size="middle" direction="horizontal">
-            {/* <Button
+            <Button
               type="primary"
               danger
               onClick={batchDelete}
               disabled={selectedRows.length === 0}
             >
               批量删除
-            </Button> */}
-            <Button onClick={testFn}>test storage</Button>
+            </Button>
             <Button
               type="primary"
               onClick={() => editSectionModal(selectedRows, ModeEnum.EDIT)}

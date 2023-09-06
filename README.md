@@ -13,6 +13,10 @@
 
 </div>
 
+
+## 项目启动
+
+使用 node 版本：16.18.0
 ## 项目功能
 
 **书签管理**
@@ -86,6 +90,7 @@
 
 ## Table of Contents
 
+- [项目启动](#项目启动)
 - [项目功能](#项目功能)
 - [Table of Contents](#table-of-contents)
 - [Intro ](#intro-)
