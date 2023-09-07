@@ -127,19 +127,26 @@ const getSubTree = async () => {
 
 const logger = (type, info) => {
   const { setStorage } = useStorage();
-  setStorage(`log-${type}`, info)
+  const nowTime = new Date().getTime();
+  const deleteDate = new Date(nowTime).toLocaleDateString();
+  const deletTimeStr = new Date(nowTime).toLocaleTimeString();
+  setStorage(`log-${type}-${nowTime}`, {deleteDate: `${deleteDate} ${deletTimeStr}`, list: info })
+}
+
+const deletBookmarkById = async (id: string) => {
+  const res = await chrome.bookmarks.remove(id)
+  return res;
 }
 
 const removeBookmark = async (record: IBookMark) => {
   logger('delete-item', record)
-  const res = await chrome.bookmarks.remove(record.id)
+  const res = await deletBookmarkById(record.id)
   return res;
 }
 
 const batchRemove = async (records: IBookMark[]) => {
-  // const ids = records.map((item) => item.id);
   logger('delete-list', records)
-  const removeFns = records.map(record => removeBookmark(record));
+  const removeFns = records.map(record => deletBookmarkById(record.id));
   const res = await Promise.all(removeFns)
   return res;
 }

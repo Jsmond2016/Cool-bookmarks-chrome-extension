@@ -8,13 +8,13 @@ const useStorage = () => {
   }
 
   const setStorage = async (key: string, data: Object | Object[]) => {
-    let storage = await getStorage(key);
-    if (Array.isArray(data)) {
-      storage = [...(storage || []), ...data]
-    } else {
-      storage = [...(storage || []), data]
-    }
-    window.localStorage.setItem(key, JSON.stringify(storage));
+    // let storage = await getStorage(key);
+    // if (Array.isArray(data)) {
+    //   storage = [...(storage || []), ...data]
+    // } else {
+    //   storage = [...(storage || []), data]
+    // }
+    window.localStorage.setItem(key, JSON.stringify(data));
   }
 
 
