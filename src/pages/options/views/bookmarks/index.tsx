@@ -23,11 +23,8 @@ export interface IBookMark {
 
 export const StoreContext = React.createContext(null);
 
-const Bookmarks: React.FC = () => {
-  const [filters, setFilters] = useState({});
-  const [list, setList] = useState([]);
-  const [store, dispatch] = useStore();
 
+const useSelectedRow = () => {
   const [selectedRows, setSelectedRows] = useState([]);
   const rowSelection = {
     onChange: (selectedRowKeys: React.Key[], selectedRows: IBookMark[]) => {
@@ -38,9 +35,49 @@ const Bookmarks: React.FC = () => {
     },
   };
 
+  const resetSelectedRows = () => setSelectedRows([])
+
+  return {
+    selectedRows,
+    rowSelection,
+    resetSelectedRows
+  }
+}
+
+const usePager = () => {
+  const [current, setCurrent] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
+  const onChange = (page, pageSize) => {
+    setPageSize(pageSize);
+    setCurrent(page);
+  }
+
+  const setDefaultPager = () => {
+    setCurrent(1);
+    setPageSize(10);
+  }
+
+  return {
+    current,
+    pageSize,
+    onChange,
+    setDefaultPager
+  }
+}
+
+const Bookmarks: React.FC = () => {
+  const [filters, setFilters] = useState({});
+  const [list, setList] = useState([]);
+  const [store, dispatch] = useStore();
+
+  const { selectedRows, rowSelection, resetSelectedRows } = useSelectedRow();
+  const { pageSize, current, onChange: onPaginationChange, setDefaultPager } = usePager();
+
   useEffect(() => {
     console.log("filters", filters);
     getBookmarks(filters);
+    setDefaultPager();
+    resetSelectedRows();
   }, [filters]);
 
   const getBookmarks = async (filters) => {
@@ -100,6 +137,9 @@ const Bookmarks: React.FC = () => {
           list={list}
           rowSelection={rowSelection}
           refreshList={() => getBookmarks(filters)}
+          current={current}
+          pageSize={pageSize}
+          onPageChange={onPaginationChange}
         />
         {sectionModal}
         {modalElement}

@@ -23,10 +23,13 @@ export type IProps = {
     onSelectAll: (selected: any, selectedRows: any, changeRows: any) => void;
   };
   refreshList: () => void;
+  current: number;
+  pageSize: number;
+  onPageChange: (page, pageSize) => any;
 };
 
 const List = (props: IProps) => {
-  const { editBookmark, list, rowSelection, refreshList } = props;
+  const { editBookmark, list, rowSelection, refreshList, current, pageSize, onPageChange } = props;
   const storeContext = useContext(StoreContext);
   const { store, dispatch } = storeContext;
   console.log("store: ", store);
@@ -101,11 +104,11 @@ const List = (props: IProps) => {
       width: 120,
       render: (v, record) => groupListMap.get(record.parentId),
     },
-    {
-      title: "自定义描述",
-      dataIndex: "description",
-      width: 120,
-    },
+    // {
+    //   title: "自定义描述",
+    //   dataIndex: "description",
+    //   width: 120,
+    // },
     {
       title: "操作",
       dataIndex: "operation",
@@ -134,6 +137,10 @@ const List = (props: IProps) => {
 
   const pagination = {
     total: list.length,
+    defaultCurrent: 1,
+    current,
+    pageSize,
+    onChange: onPageChange,
     showTotal,
   };
 

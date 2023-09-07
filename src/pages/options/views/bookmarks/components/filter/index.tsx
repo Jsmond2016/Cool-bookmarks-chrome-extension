@@ -134,7 +134,7 @@ const Search = ({ setFilters }) => {
           </Col>
           <Col className="gutter-row" span={6}>
             <Space size="large">
-              <Button type="default" htmlType="reset">
+              <Button type="default" htmlType="reset" onClick={() => setFilters({})}>
                 重置
               </Button>
               <Button type="primary" htmlType="submit">
