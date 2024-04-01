@@ -34,7 +34,7 @@
     "@types/node": "18.15.11",
     "@types/ramda": "^0.29.3",
     "@types/react": "18.0.21",
-    "@types/react-dom": "18.2.4",
+    "@types/react-dom": "18.2.23",
     "@types/react-router-dom": "^5.3.3",
     "@types/ws": "^8.5.5",
     "@typescript-eslint/eslint-plugin": "5.56.0",
