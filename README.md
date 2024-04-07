@@ -16,13 +16,21 @@
 
 ## 项目启动
 
-使用 node 版本：16.18.0
+```
+yarn build:watch
+```
+
+修改后，刷新 chrome 插件；
+
 ## 项目功能
 
 TOP 优化项：(2024.03.30 23:41:47)
-- [ ] 编辑书签-所属文件夹
-- [ ] 批量修改-修改所属文件夹；
-- [ ] 修改筛选顺序，依次为-时间，文件夹名-书签名；
+
+已完成： 2024.04.07 23:04:10
+
+- [x] 编辑书签-所属文件夹
+- [x] 批量修改-修改所属文件夹；
+- [x] 修改筛选顺序，依次为-时间，文件夹名-书签名；
 
 **书签管理**
 - 书签搜索
@@ -171,8 +179,8 @@ This boilerplate is made for creating chrome extensions using React and Typescri
 ---
 ## Thanks To
 
-| [Jetbrains](https://jb.gg/OpenSourceSupport)                                                                           | [Jackson Hong](https://www.linkedin.com/in/j-acks0n/)                                            |
-|--------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------|
+| [Jetbrains](https://jb.gg/OpenSourceSupport)                                                                                               | [Jackson Hong](https://www.linkedin.com/in/j-acks0n/)                                            |
+| ------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------ |
 | <img width="100" src="https://resources.jetbrains.com/storage/products/company/brand/logos/jb_beam.png" alt="JetBrains Logo (Main) logo."> | <img width="100" src='https://avatars.githubusercontent.com/u/23139754?v=4' alt='Jackson Hong'/> |
 
 

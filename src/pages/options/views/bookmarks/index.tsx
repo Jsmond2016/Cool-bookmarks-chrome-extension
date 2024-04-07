@@ -9,6 +9,7 @@ import useSectionModal, { ModeEnum } from "./hooks/useSectionModal";
 import List from "./components/list";
 import { useStore } from "../../store";
 import { useStorage } from "../../storage";
+import useBatchEditMarkModal from "./hooks/useBatchEditMarkModal";
 
 export interface IBookMark {
   dateAdded: number;
@@ -23,7 +24,6 @@ export interface IBookMark {
 
 export const StoreContext = React.createContext(null);
 
-
 const useSelectedRow = () => {
   const [selectedRows, setSelectedRows] = useState([]);
   const rowSelection = {
@@ -35,14 +35,14 @@ const useSelectedRow = () => {
     },
   };
 
-  const resetSelectedRows = () => setSelectedRows([])
+  const resetSelectedRows = () => setSelectedRows([]);
 
   return {
     selectedRows,
     rowSelection,
-    resetSelectedRows
-  }
-}
+    resetSelectedRows,
+  };
+};
 
 const usePager = () => {
   const [current, setCurrent] = useState(1);
@@ -50,20 +50,20 @@ const usePager = () => {
   const onChange = (page, pageSize) => {
     setPageSize(pageSize);
     setCurrent(page);
-  }
+  };
 
   const setDefaultPager = () => {
     setCurrent(1);
     setPageSize(10);
-  }
+  };
 
   return {
     current,
     pageSize,
     onChange,
-    setDefaultPager
-  }
-}
+    setDefaultPager,
+  };
+};
 
 const Bookmarks: React.FC = () => {
   const [filters, setFilters] = useState({});
@@ -71,7 +71,12 @@ const Bookmarks: React.FC = () => {
   const [store, dispatch] = useStore();
 
   const { selectedRows, rowSelection, resetSelectedRows } = useSelectedRow();
-  const { pageSize, current, onChange: onPaginationChange, setDefaultPager } = usePager();
+  const {
+    pageSize,
+    current,
+    onChange: onPaginationChange,
+    setDefaultPager,
+  } = usePager();
 
   useEffect(() => {
     console.log("filters", filters);
@@ -87,7 +92,15 @@ const Bookmarks: React.FC = () => {
 
   const batchDelete = async () => {
     // const ids = selectedRows.map((item) => item.id);
-    const titleNode = <span>确定删除<span style={{color: 'red', fontWeight: 'bold'}}>{selectedRows.length}条</span>书签吗???</span>
+    const titleNode = (
+      <span>
+        确定删除
+        <span style={{ color: "red", fontWeight: "bold" }}>
+          {selectedRows.length}条
+        </span>
+        书签吗???
+      </span>
+    );
     Modal.confirm({
       title: titleNode,
       onOk: async () => {
@@ -102,11 +115,17 @@ const Bookmarks: React.FC = () => {
     });
   };
 
+  const batchEdit = async () => {
+    // selectedRows
+    const ids = selectedRows.map((item) => item.id) as string[];
+    editBatchEditModal(ids);
+  };
+
   const { editBookmarkModal, modalElement } = useEditBookmarkModal();
   const { editSectionModal, ele: sectionModal } = useSectionModal();
+  const { editBatchEditModal, ele: batchEditModal } = useBatchEditMarkModal();
 
   const { setStorage } = useStorage();
-
 
   return (
     // TODO: 这个 store 后续可以根据需要放在 App 组件上，让所有组件获取到 store 数据，跨菜单拿到 store 数据；
@@ -122,6 +141,13 @@ const Bookmarks: React.FC = () => {
               disabled={selectedRows.length === 0}
             >
               批量删除
+            </Button>
+            <Button
+              type="primary"
+              onClick={batchEdit}
+              disabled={selectedRows.length === 0}
+            >
+              批量修改
             </Button>
             <Button
               type="primary"
@@ -143,6 +169,7 @@ const Bookmarks: React.FC = () => {
         />
         {sectionModal}
         {modalElement}
+        {batchEditModal}
       </div>
     </StoreContext.Provider>
   );

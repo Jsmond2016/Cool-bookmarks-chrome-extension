@@ -138,6 +138,10 @@ const deletBookmarkById = async (id: string) => {
   return res;
 }
 
+const moveBookmark = async (id: string, destinationId: string ) => {
+  return await chrome.bookmarks.move(id, { parentId: destinationId })
+}
+
 const removeBookmark = async (record: IBookMark) => {
   logger('delete-item', record)
   const res = await deletBookmarkById(record.id)
@@ -151,6 +155,12 @@ const batchRemove = async (records: IBookMark[]) => {
   return res;
 }
 
+const batchMove = async (sourceIds: string[], destinationId: string) => {
+  const moveFns = sourceIds.map(id => moveBookmark(id, destinationId))
+  const res = await Promise.allSettled(moveFns);
+  return res;
+}
+
 export {
   queryBookmarksByRecent,
   saveSection,
@@ -160,5 +170,7 @@ export {
   getBookMarksByIds,
   getGroupList,
   removeBookmark,
-  batchRemove
+  batchRemove,
+  moveBookmark,
+  batchMove
 };

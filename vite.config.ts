@@ -21,7 +21,7 @@ const isProduction = !isDev;
 const enableHmrInBackgroundScript = true;
 
 export default defineConfig({
-  resolve: {
+   resolve: {
     alias: {
       "@src": root,
       "@assets": assetsDir,

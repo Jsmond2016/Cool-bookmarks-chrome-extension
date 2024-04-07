@@ -3,6 +3,7 @@ import { Modal, Input, Form, message, Select } from "antd";
 import * as api from "../../../api";
 import { sourceMap } from "../../../utils";
 import { IBookMark } from "../";
+import { ApiSelect } from "../components/filter";
 
 
 const useEditBookmarkModal = () => {
@@ -21,12 +22,19 @@ const useEditBookmarkModal = () => {
 
   const updateBookmark = async () => {
     const values = await form.validateFields();
-    const { id, title, url } = values;
-    const rs = await api.updateBookmark({ id, changes: { title, url } });
+    const { id, title, url, dirId } = values;
+   try {
+    await api.updateBookmark({ id, changes: { title, url } });
+    if (dirId) {
+      await api.moveBookmark(id, dirId)
+    }
     // TODO: source / description 没有保存
-    console.log('rs: ', rs);
     message.success("修改成功")
     setModalVisible(false);
+   } catch(error) {
+    console.log('error', error)
+    message.error('修改失败')
+   }
   };
 
   const ele = (
@@ -55,6 +63,9 @@ const useEditBookmarkModal = () => {
           rules={[{ required: true, message: "链接" }]}
         >
           <Input placeholder="请输入链接" />
+        </Form.Item>
+        <Form.Item label="所属文件夹" name="dirId">
+          <ApiSelect  />
         </Form.Item>
         <Form.Item label="来源" name="source">
           <Select>

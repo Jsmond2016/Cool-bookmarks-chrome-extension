@@ -45,7 +45,7 @@ const rangePresets: {
 
 type ApiSelectProps = SelectProps;
 
-const ApiSelect = ({ value, onChange }: ApiSelectProps) => {
+export const ApiSelect = ({ value, onChange }: ApiSelectProps) => {
   const storeContext = useContext(StoreContext);
   const { store, dispatch } = storeContext;
   useEffect(() => {
@@ -104,24 +104,12 @@ const Search = ({ setFilters }) => {
 
   return (
     <div className="search-container">
-      <Form form={form} onFinish={onFinish}>
+      <Form
+        form={form}
+        onFinish={onFinish}
+        initialValues={{ collectDateRange: [dayjs().add(-14, "d"), dayjs()] }}
+      >
         <Row gutter={16}>
-          <Col className="gutter-row" span={6}>
-            <FormItem label="书签名" name="bookmarkName">
-              <Input />
-            </FormItem>
-          </Col>
-          <Col className="gutter-row" span={6}>
-            <FormItem label="按来源分类" name="categoryUrl">
-              <Select allowClear>
-                {Object.entries(sourceMap).map(([key, name]) => (
-                  <Select.Option key={key} value={key}>
-                    {name}
-                  </Select.Option>
-                ))}
-              </Select>
-            </FormItem>
-          </Col>
           <Col className="gutter-row" span={6}>
             <FormItem label="收藏日期" name="collectDateRange">
               <RangePicker
@@ -133,8 +121,23 @@ const Search = ({ setFilters }) => {
             </FormItem>
           </Col>
           <Col className="gutter-row" span={6}>
+            <FormItem label="所属文件夹名" name="belongToId">
+              <ApiSelect />
+            </FormItem>
+          </Col>
+          <Col className="gutter-row" span={6}>
+            <FormItem label="书签名" name="bookmarkName">
+              <Input />
+            </FormItem>
+          </Col>
+
+          <Col className="gutter-row" span={6}>
             <Space size="large">
-              <Button type="default" htmlType="reset" onClick={() => setFilters({})}>
+              <Button
+                type="default"
+                htmlType="reset"
+                onClick={() => setFilters({})}
+              >
                 重置
               </Button>
               <Button type="primary" htmlType="submit">
@@ -145,8 +148,14 @@ const Search = ({ setFilters }) => {
         </Row>
         <Row gutter={16}>
           <Col className="gutter-row" span={6}>
-            <FormItem label="所属文件夹名" name="belongToId">
-              <ApiSelect />
+            <FormItem label="按来源分类" name="categoryUrl">
+              <Select allowClear>
+                {Object.entries(sourceMap).map(([key, name]) => (
+                  <Select.Option key={key} value={key}>
+                    {name}
+                  </Select.Option>
+                ))}
+              </Select>
             </FormItem>
           </Col>
         </Row>
