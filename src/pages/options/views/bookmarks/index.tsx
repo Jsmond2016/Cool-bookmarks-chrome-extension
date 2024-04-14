@@ -90,6 +90,8 @@ const Bookmarks: React.FC = () => {
     setList(bookmarks);
   };
 
+  const refreshList = () => getBookmarks(filters);
+
   const batchDelete = async () => {
     // const ids = selectedRows.map((item) => item.id);
     const titleNode = (
@@ -107,7 +109,7 @@ const Bookmarks: React.FC = () => {
         try {
           await batchRemove(selectedRows);
           message.success(`已删除${selectedRows.length}条书签`);
-          await getBookmarks(filters);
+          refreshList();
         } catch (error) {
           message.error("批量删除失败");
         }
@@ -118,7 +120,7 @@ const Bookmarks: React.FC = () => {
   const batchEdit = async () => {
     // selectedRows
     const ids = selectedRows.map((item) => item.id) as string[];
-    editBatchEditModal(ids);
+    editBatchEditModal(ids, refreshList);
   };
 
   const { editBookmarkModal, modalElement } = useEditBookmarkModal();
@@ -132,7 +134,7 @@ const Bookmarks: React.FC = () => {
     <StoreContext.Provider value={{ store, dispatch }}>
       <div className="bookmarks-wrap">
         <Search setFilters={setFilters} />
-        <Row justify="end">
+        <Row justify="end" style={{ marginTop: "24px" }}>
           <Space size="middle" direction="horizontal">
             <Button
               type="primary"
@@ -151,7 +153,9 @@ const Bookmarks: React.FC = () => {
             </Button>
             <Button
               type="primary"
-              onClick={() => editSectionModal(selectedRows, ModeEnum.EDIT)}
+              onClick={() =>
+                editSectionModal(selectedRows, ModeEnum.EDIT, refreshList)
+              }
               disabled={selectedRows.length === 0}
             >
               创建片段
@@ -159,10 +163,10 @@ const Bookmarks: React.FC = () => {
           </Space>
         </Row>
         <List
-          editBookmark={editBookmarkModal}
+          editBookmark={(values) => editBookmarkModal(values, refreshList)}
           list={list}
           rowSelection={rowSelection}
-          refreshList={() => getBookmarks(filters)}
+          refreshList={refreshList}
           current={current}
           pageSize={pageSize}
           onPageChange={onPaginationChange}

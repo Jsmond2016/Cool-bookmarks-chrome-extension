@@ -1,40 +1,50 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Modal, Input, Form, message, Select } from "antd";
 import * as api from "../../../api";
 import { sourceMap } from "../../../utils";
 import { IBookMark } from "../";
 import { ApiSelect } from "../components/filter";
 
-
 const useEditBookmarkModal = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [form] = Form.useForm();
 
   const setFormFields = (defaultValues: IBookMark) => {
-    const { title, description, url, source, id } = defaultValues;
-    form.setFieldsValue({ title, description, url, source, id });
+    const { title, description, url, source, id, parentId } = defaultValues;
+    form.setFieldsValue({
+      title,
+      description,
+      url,
+      source,
+      id,
+      dirId: parentId,
+    });
   };
 
-  const openModalAndSetValues = (values: IBookMark) => {
+  const onSuccessCBRef = useRef(null);
+
+  const openModalAndSetValues = (values: IBookMark, cb) => {
     setModalVisible(true);
     setFormFields(values);
+    onSuccessCBRef.current = cb;
   };
 
   const updateBookmark = async () => {
     const values = await form.validateFields();
     const { id, title, url, dirId } = values;
-   try {
-    await api.updateBookmark({ id, changes: { title, url } });
-    if (dirId) {
-      await api.moveBookmark(id, dirId)
+    try {
+      await api.updateBookmark({ id, changes: { title, url } });
+      if (dirId) {
+        await api.moveBookmark(id, dirId);
+      }
+      // TODO: source / description 没有保存
+      message.success("修改成功");
+      onSuccessCBRef.current?.();
+      setModalVisible(false);
+    } catch (error) {
+      console.log("error", error);
+      message.error("修改失败");
     }
-    // TODO: source / description 没有保存
-    message.success("修改成功")
-    setModalVisible(false);
-   } catch(error) {
-    console.log('error', error)
-    message.error('修改失败')
-   }
   };
 
   const ele = (
@@ -65,7 +75,7 @@ const useEditBookmarkModal = () => {
           <Input placeholder="请输入链接" />
         </Form.Item>
         <Form.Item label="所属文件夹" name="dirId">
-          <ApiSelect  />
+          <ApiSelect />
         </Form.Item>
         <Form.Item label="来源" name="source">
           <Select>

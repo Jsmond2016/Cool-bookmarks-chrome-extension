@@ -13,7 +13,7 @@ import {
 } from "antd";
 import { removeBookmark } from "@src/pages/options/api";
 
-const { Paragraph, Text } = Typography;
+const { Paragraph, Link } = Typography;
 
 export type IProps = {
   list: IBookMark[];
@@ -29,7 +29,15 @@ export type IProps = {
 };
 
 const List = (props: IProps) => {
-  const { editBookmark, list, rowSelection, refreshList, current, pageSize, onPageChange } = props;
+  const {
+    editBookmark,
+    list,
+    rowSelection,
+    refreshList,
+    current,
+    pageSize,
+    onPageChange,
+  } = props;
   const storeContext = useContext(StoreContext);
   const { store, dispatch } = storeContext;
   console.log("store: ", store);
@@ -71,21 +79,13 @@ const List = (props: IProps) => {
     {
       title: "书签名",
       dataIndex: "title",
-      width: 260,
+      width: 360,
       render: (v) => (
         <Tooltip title={v}>
-          <Paragraph ellipsis style={{width: '260px'}}>{v}</Paragraph>
+          <Paragraph ellipsis style={{ width: "360px" }}>
+            <Link href={v.url}>{v}</Link>
+          </Paragraph>
         </Tooltip>
-      ),
-    },
-    {
-      title: "链接",
-      dataIndex: "url",
-      width: 260,
-      render: (value) => (
-        <a href={value} target="_blank" style={{ wordBreak: "break-all" }}>
-          {value}
-        </a>
       ),
     },
     {
@@ -112,7 +112,7 @@ const List = (props: IProps) => {
     {
       title: "操作",
       dataIndex: "operation",
-      width: 100,
+      width: 180,
       render: (v, record) => (
         <Space size="small" direction="horizontal">
           <Button type="link" onClick={() => copyBookmark(record)}>

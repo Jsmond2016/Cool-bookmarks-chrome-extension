@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import {
   Modal,
   List,
@@ -196,7 +196,7 @@ const useSectionModal = () => {
   const [list, setList] = useState([]);
   const [mode, setMode] = useState(ModeEnum.EDIT);
   const [form] = Form.useForm();
-
+  const onSuccessCBRef = useRef(null);
   const saveSection = async () => {
     const values = await form.validateFields();
     const sectionData = {
@@ -208,14 +208,15 @@ const useSectionModal = () => {
     const res = await api.saveSection({ data: sectionData });
     if (!(res || "").includes("success")) return;
     message.success("保存成功");
+    onSuccessCBRef.current?.();
     setVisible(false);
   };
 
-  const openModalAndSetValues = (list: IBookMark[], _mode: ModeEnum) => {
-    console.log("list: ", list);
+  const openModalAndSetValues = (list: IBookMark[], _mode: ModeEnum, cb) => {
     setList(list);
     setMode(_mode);
     setVisible(true);
+    onSuccessCBRef.current = cb;
   };
 
   const onCopyAll = async () => {
@@ -226,7 +227,7 @@ const useSectionModal = () => {
     // https://developer.mozilla.org/en-US/docs/Web/API/Clipboard/writeText
     const res = await navigator.clipboard.writeText(text);
     console.log("res: ", res);
-    message.success('复制成功!')
+    message.success("复制成功!");
   };
 
   const Footer = () =>

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Modal, Input, Form, message, Select } from "antd";
 import * as api from "../../../api";
 import { sourceMap } from "../../../utils";
@@ -8,24 +8,24 @@ import { ApiSelect } from "../components/filter";
 const useBatchEditMarkModal = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [form] = Form.useForm();
-
-  const setFormFields = (ids: IBookMark["id"][]) => {
+  const onSuccessCBRef = useRef(null);
+  const setFormFields = (ids: IBookMark["id"][], onSuccessCallback) => {
     // const { title, description, url, source, id } = defaultValues;
     form.setFieldsValue({ ids });
+    onSuccessCBRef.current = onSuccessCallback;
   };
 
-  const openModalAndSetValues = (values: IBookMark["id"][]) => {
+  const openModalAndSetValues = (values: IBookMark["id"][], cb) => {
     setModalVisible(true);
-    setFormFields(values);
+    setFormFields(values, cb);
   };
 
   const updateBookmark = async () => {
     const values = await form.validateFields();
-    console.log("values: ", values);
     const { ids, dirId } = values;
-    const rs = await api.batchMove(ids, dirId);
-    console.log("rs: ", rs);
+    await api.batchMove(ids, dirId);
     message.success("批量修改成功");
+    onSuccessCBRef.current?.();
     setModalVisible(false);
   };
 
