@@ -40,7 +40,6 @@ const List = (props: IProps) => {
   } = props;
   const storeContext = useContext(StoreContext);
   const { store, dispatch } = storeContext;
-  console.log("store: ", store);
 
   const groupListMap = useMemo(() => {
     return store.groupList.reduce((pre, cur) => {
@@ -80,10 +79,10 @@ const List = (props: IProps) => {
       title: "书签名",
       dataIndex: "title",
       width: 360,
-      render: (v) => (
+      render: (v, record) => (
         <Tooltip title={v}>
           <Paragraph ellipsis style={{ width: "360px" }}>
-            <Link href={v.url}>{v}</Link>
+            <Link href={record.url}>{v}</Link>
           </Paragraph>
         </Tooltip>
       ),
