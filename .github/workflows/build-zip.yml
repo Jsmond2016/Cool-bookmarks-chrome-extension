@@ -1,32 +1,43 @@
-name: Build And Upload Extension Zip Via Artifact
+name: Build and Release
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
   pull_request:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v3
 
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          cache: 'yarn'
+          node-version: "22.12.0" # 你可以根据需要调整 Node.js 版本
+          cache: "pnpm"
 
-      - uses: actions/cache@v3
+      - name: Cache pnpm modules
+        uses: actions/cache@v3
         with:
-          path: node_modules
-          key: ${{ runner.OS }}-build-${{ hashFiles('**/package-lock.json') }}
+          path: ~/.pnpm-store
+          key: ${{ runner.OS }}-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.OS }}-pnpm-
 
-      - run: yarn install
+      - name: Install dependencies
+        run: pnpm install
 
-      - run: yarn build
+      - name: Build project
+        run: pnpm build
 
-      - uses: actions/upload-artifact@v3
+      - name: Zip dist folder
+        run: zip -r dist.zip dist
+
+      - name: Upload release artifact
+        uses: actions/upload-artifact@v3
         with:
-          path: dist/*
+          name: dist.zip
+          path: dist.zip
