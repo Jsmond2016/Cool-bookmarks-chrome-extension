@@ -19,7 +19,7 @@ jobs:
           node-version: "22.12.0" # 你可以根据需要调整 Node.js 版本
 
       - name: Install pnpm
-        uses: pnpm/action-setup-pnpm@v2
+        uses: pnpm/action-setup@v2
         with:
           version: 9.15.0 # 你可以根据需要调整 pnpm 版本
 
