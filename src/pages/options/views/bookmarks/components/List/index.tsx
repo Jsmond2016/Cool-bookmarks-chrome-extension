@@ -1,6 +1,6 @@
 import type { ColumnsType } from "antd/es/table";
-import { IBookMark, StoreContext } from "../..";
-import { useContext, useMemo } from "react";
+import { IBookMark } from "../..";
+import { useMemo } from "react";
 import Table from "antd/es/table";
 import {
   Button,
@@ -12,6 +12,7 @@ import {
   Tooltip,
 } from "antd";
 import { removeBookmark } from "@src/pages/options/api";
+import { useGroupListStore } from "@src/pages/store";
 
 const { Paragraph, Link } = Typography;
 
@@ -39,15 +40,14 @@ const List = (props: IProps) => {
     onPageChange,
   } = props;
 
-  const storeContext = useContext(StoreContext);
-  const { store, dispatch } = storeContext;
+  const { groupList } = useGroupListStore();
 
   const groupListMap = useMemo(() => {
-    return store.groupList.reduce((pre, cur) => {
+    return groupList.reduce((pre, cur) => {
       pre.set(cur.id, cur.title);
       return pre;
     }, new Map());
-  }, [store]);
+  }, [groupList]);
 
   const copyBookmark = async (record: IBookMark) => {
     const { url, title } = record;

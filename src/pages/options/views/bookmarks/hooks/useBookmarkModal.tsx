@@ -3,7 +3,7 @@ import { Modal, Input, Form, message, Select } from "antd";
 import * as api from "../../../api";
 import { sourceMap } from "../../../utils";
 import { IBookMark } from "../";
-import { ApiSelect } from "../components/filter";
+import ApiSelect from "@src/components/ApiSelect";
 
 const useEditBookmarkModal = () => {
   const [modalVisible, setModalVisible] = useState(false);

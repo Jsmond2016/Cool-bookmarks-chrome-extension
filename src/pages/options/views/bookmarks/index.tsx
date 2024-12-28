@@ -7,9 +7,8 @@ import { batchRemove, queryBookmarksByRecent } from "@pages/options/api";
 import useEditBookmarkModal from "./hooks/useBookmarkModal";
 import useSectionModal, { ModeEnum } from "./hooks/useSectionModal";
 import List from "./components/list";
-import { useStore } from "../../store";
-import { useStorage } from "../../storage";
 import useBatchEditMarkModal from "./hooks/useBatchEditMarkModal";
+import { useGroupListStore } from "@src/pages/store";
 
 export interface IBookMark {
   dateAdded: number;
@@ -21,8 +20,6 @@ export interface IBookMark {
   title: string;
   url: string;
 }
-
-export const StoreContext = React.createContext(null);
 
 const useSelectedRow = () => {
   const [selectedRows, setSelectedRows] = useState([]);
@@ -69,7 +66,7 @@ const usePager = () => {
 const Bookmarks: React.FC = () => {
   const [filters, setFilters] = useState({});
   const [list, setList] = useState([]);
-  const [store, dispatch] = useStore();
+  const { groupList, updateGroupList } = useGroupListStore();
 
   const { selectedRows, rowSelection, resetSelectedRows } = useSelectedRow();
   const {
@@ -131,55 +128,52 @@ const Bookmarks: React.FC = () => {
   const { editSectionModal, ele: sectionModal } = useSectionModal();
   const { editBatchEditModal, ele: batchEditModal } = useBatchEditMarkModal();
 
-  const { setStorage } = useStorage();
-
   return (
     // TODO: 这个 store 后续可以根据需要放在 App 组件上，让所有组件获取到 store 数据，跨菜单拿到 store 数据；
-    <StoreContext.Provider value={{ store, dispatch }}>
-      <div className="bookmarks-wrap">
-        <Search setFilters={setFilters} />
-        <Row justify="end" style={{ marginTop: "24px" }}>
-          <Space size="middle" direction="horizontal">
-            <Button
-              type="primary"
-              onClick={batchEdit}
-              disabled={selectedRows.length === 0}
-            >
-              批量修改
-            </Button>
-            <Button
-              type="primary"
-              onClick={() =>
-                editSectionModal(selectedRows, ModeEnum.EDIT, refreshList)
-              }
-              disabled={selectedRows.length === 0}
-            >
-              创建片段
-            </Button>
-            <Button
-              type="primary"
-              danger
-              onClick={batchDelete}
-              disabled={selectedRows.length === 0}
-            >
-              批量删除
-            </Button>
-          </Space>
-        </Row>
-        <List
-          editBookmark={(values) => editBookmarkModal(values, refreshList)}
-          list={list}
-          rowSelection={rowSelection}
-          refreshList={refreshList}
-          current={current}
-          pageSize={pageSize}
-          onPageChange={onPaginationChange}
-        />
-        {sectionModal}
-        {modalElement}
-        {batchEditModal}
-      </div>
-    </StoreContext.Provider>
+
+    <div className="bookmarks-wrap">
+      <Search setFilters={setFilters} />
+      <Row justify="end" style={{ marginTop: "24px" }}>
+        <Space size="middle" direction="horizontal">
+          <Button
+            type="primary"
+            onClick={batchEdit}
+            disabled={selectedRows.length === 0}
+          >
+            批量修改
+          </Button>
+          <Button
+            type="primary"
+            onClick={() =>
+              editSectionModal(selectedRows, ModeEnum.EDIT, refreshList)
+            }
+            disabled={selectedRows.length === 0}
+          >
+            创建片段
+          </Button>
+          <Button
+            type="primary"
+            danger
+            onClick={batchDelete}
+            disabled={selectedRows.length === 0}
+          >
+            批量删除
+          </Button>
+        </Space>
+      </Row>
+      <List
+        editBookmark={(values) => editBookmarkModal(values, refreshList)}
+        list={list}
+        rowSelection={rowSelection}
+        refreshList={refreshList}
+        current={current}
+        pageSize={pageSize}
+        onPageChange={onPaginationChange}
+      />
+      {sectionModal}
+      {modalElement}
+      {batchEditModal}
+    </div>
   );
 };
 

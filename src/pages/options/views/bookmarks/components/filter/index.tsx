@@ -1,24 +1,10 @@
-import {
-  Col,
-  Input,
-  Row,
-  DatePicker,
-  Select,
-  Form,
-  Space,
-  Button,
-  SelectProps,
-} from "antd";
+import { Col, Input, Row, DatePicker, Select, Form, Space, Button } from "antd";
 import dayjs from "dayjs";
 import type { Dayjs } from "dayjs";
 import "./index.less";
 import { sourceMap } from "../../../../utils";
-import { evolve, filter, map, pipe } from "ramda";
-import { useContext, useEffect, useState } from "react";
-import { getGroupList } from "@src/pages/options/api";
-import { ActionType, useStore } from "@src/pages/options/store";
-import { LabeledValue } from "antd/es/select";
-import { StoreContext } from "../..";
+import { filter, map, pipe } from "ramda";
+import ApiSelect from "@src/components/ApiSelect";
 
 const formItemLayout = {
   labelCol: { span: 8 },
@@ -42,47 +28,6 @@ const rangePresets: {
   { label: "最近1个月", value: [dayjs().add(-30, "d"), dayjs()] },
   { label: "最近3个月", value: [dayjs().add(-90, "d"), dayjs()] },
 ];
-
-type ApiSelectProps = SelectProps;
-
-export const ApiSelect = ({ value, onChange }: ApiSelectProps) => {
-  const storeContext = useContext(StoreContext);
-  const { store, dispatch } = storeContext;
-  useEffect(() => {
-    if (store.groupList.length === 0) {
-      getGroupList().then((bookmarks) => {
-        dispatch({
-          type: ActionType.UPDATE_GROUP_LIST,
-          payload: { groupList: bookmarks },
-        });
-      });
-    }
-  }, []);
-
-  const options: LabeledValue[] = store.groupList.map(
-    ({ title, id }: Record<string, string>) => ({
-      label: title,
-      value: id,
-    })
-  );
-
-  return (
-    <Select
-      value={value}
-      showSearch
-      allowClear
-      placeholder="请搜索并选择文件夹"
-      optionFilterProp="label"
-      onChange={onChange}
-      filterOption={(input, option: LabeledValue) =>
-        ((option?.label as string) ?? "")
-          .toLowerCase()
-          .includes(input.toLowerCase())
-      }
-      options={options}
-    />
-  );
-};
 
 const Search = ({ setFilters }) => {
   const [form] = Form.useForm();
