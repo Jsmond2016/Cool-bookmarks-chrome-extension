@@ -4,6 +4,7 @@ import * as api from "@src/pages/apis";
 import { sourceMap } from "../../../utils";
 import { IBookMark } from "../";
 import ApiSelect from "@src/components/ApiSelect";
+import { BOOKMARK_CUSTOM_SPLIT } from "@src/constants/constant";
 
 const useEditBookmarkModal = () => {
   const [modalVisible, setModalVisible] = useState(false);
@@ -25,15 +26,24 @@ const useEditBookmarkModal = () => {
 
   const openModalAndSetValues = (values: IBookMark, cb) => {
     setModalVisible(true);
-    setFormFields(values);
+    const [sourceTitle, customDescription] = values.title.split(
+      BOOKMARK_CUSTOM_SPLIT
+    );
+    const formValues = {
+      ...values,
+      title: sourceTitle,
+      description: customDescription || "",
+    };
+    setFormFields(formValues);
     onSuccessCBRef.current = cb;
   };
 
   const updateBookmark = async () => {
     const values = await form.validateFields();
-    const { id, title, url, dirId } = values;
+    const { id, title, url, dirId, description } = values;
+    const newTitle = `${title}${BOOKMARK_CUSTOM_SPLIT}${description}`;
     try {
-      await api.updateBookmark({ id, changes: { title, url } });
+      await api.updateBookmark({ id, changes: { title: newTitle, url } });
       if (dirId) {
         await api.moveBookmark(id, dirId);
       }

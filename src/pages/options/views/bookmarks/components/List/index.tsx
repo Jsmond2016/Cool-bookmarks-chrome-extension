@@ -13,6 +13,7 @@ import {
 } from "antd";
 import { removeBookmark } from "@src/pages/apis";
 import { useGroupListStore } from "@src/pages/store";
+import { BOOKMARK_CUSTOM_SPLIT } from "@src/constants/constant";
 
 const { Paragraph, Link } = Typography;
 
@@ -83,7 +84,21 @@ const List = (props: IProps) => {
       render: (v, record) => (
         <Tooltip title={v}>
           <Paragraph ellipsis style={{ width: "360px" }}>
-            <Link href={record.url}>{v}</Link>
+            <Link href={record.url}>
+              {v.split(BOOKMARK_CUSTOM_SPLIT)[0]?.trim()}
+            </Link>
+          </Paragraph>
+        </Tooltip>
+      ),
+    },
+    {
+      title: "描述",
+      dataIndex: "description",
+      width: 360,
+      render: (v, record) => (
+        <Tooltip title={v}>
+          <Paragraph ellipsis style={{ width: "360px" }}>
+            {record.title.split(BOOKMARK_CUSTOM_SPLIT)[1]?.trim()}
           </Paragraph>
         </Tooltip>
       ),
