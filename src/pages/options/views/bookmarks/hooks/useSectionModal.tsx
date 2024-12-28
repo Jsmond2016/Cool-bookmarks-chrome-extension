@@ -80,7 +80,6 @@ function SortableItem(props: SortTableItemProps) {
           <DragOutlined
             ref={setActivatorNodeRef}
             {...listeners}
-            rev={undefined}
             style={iconStyles}
           />
         </Col>
@@ -93,7 +92,6 @@ function SortableItem(props: SortTableItemProps) {
               removeItem(item);
             }}
             style={{ fontSize: "16px", color: "#ff4d4f", cursor: "pointer" }}
-            rev={undefined}
           />
         </Col>
       </Row>
@@ -178,7 +176,6 @@ const DefaultPreveiwList = ({ list }) => (
           <a href={item.url}>{item.bookmarkName}</a>
           <MinusCircleOutlined
             style={{ fontSize: "16px", color: "#08c" }}
-            rev={undefined}
           />
         </Row>
       </List.Item>

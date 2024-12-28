@@ -79,7 +79,7 @@ const Index = () => {
     {
       title: "书签详情",
       dataIndex: "list",
-      render: (value) => <a onClick={() => editSectionModal(value, ModeEnum.PREVIEW)}>点击查看详情</a>,
+      render: (value) => <a onClick={() => editSectionModal(value, ModeEnum.PREVIEW, () => {})}>点击查看详情</a>,
     },
   ];
 

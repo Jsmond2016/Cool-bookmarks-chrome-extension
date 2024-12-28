@@ -17,7 +17,7 @@
 ## 项目启动
 
 ```
-yarn build:watch
+pnpm run build:watch
 ```
 
 修改后，刷新 chrome 插件；
