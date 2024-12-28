@@ -30,6 +30,7 @@ import {
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { DragOutlined, MinusCircleOutlined } from "@ant-design/icons";
+import { BOOKMARK_CUSTOM_SPLIT } from "@src/constants/constant";
 
 type Item = {
   dateAdded: number;
@@ -84,7 +85,7 @@ function SortableItem(props: SortTableItemProps) {
           />
         </Col>
         <Col flex="auto">
-          <a href={item.url}>{item.bookmarkName}</a>
+          <a href={item.url}>{getTitleTuple(item.bookmarkName)[0]}</a>
         </Col>
         <Col flex="20px">
           <MinusCircleOutlined
@@ -111,6 +112,9 @@ const DefaultList = ({ list, renderItem }: DefaultListProps) => (
     renderItem={renderItem}
   ></List>
 );
+const getTitleTuple = (title): [string, string] => {
+  return title.split(BOOKMARK_CUSTOM_SPLIT);
+};
 
 /**
  * 拖拽列表功能
@@ -167,19 +171,21 @@ function DndList({ items, setItems }) {
   );
 }
 
-const DefaultPreveiwList = ({ list }) => (
-  <DefaultList
-    list={list}
-    renderItem={(item: Item) => (
-      <List.Item>
-        <Row justify="space-between">
-          <a href={item.url}>{item.bookmarkName}</a>
-          <MinusCircleOutlined style={{ fontSize: "16px", color: "#08c" }} />
-        </Row>
-      </List.Item>
-    )}
-  />
-);
+const DefaultPreveiwList = ({ list }) => {
+  return (
+    <DefaultList
+      list={list}
+      renderItem={(item: Item) => (
+        <List.Item>
+          <Row justify="space-between">
+            <a href={item.url}>{getTitleTuple(item.bookmarkName)[0]}</a>
+            <MinusCircleOutlined style={{ fontSize: "16px", color: "#08c" }} />
+          </Row>
+        </List.Item>
+      )}
+    />
+  );
+};
 
 export enum ModeEnum {
   EDIT = "EDIT",
@@ -216,7 +222,10 @@ const useSectionModal = () => {
 
   const onCopyAll = async () => {
     const text = list
-      .map(({ title, url }) => `- [${title}](${url})`)
+      .map(({ title, url }) => {
+        const [sourceTitle, desc] = getTitleTuple(title);
+        return `- [${sourceTitle}](${url}): ${desc}`;
+      })
       .join("\n");
     // refer: https://stackoverflow.com/questions/400212/how-do-i-copy-to-the-clipboard-in-javascript
     // https://developer.mozilla.org/en-US/docs/Web/API/Clipboard/writeText

@@ -81,15 +81,16 @@ const List = (props: IProps) => {
       title: "书签名",
       dataIndex: "title",
       width: 360,
-      render: (v, record) => (
-        <Tooltip title={v}>
-          <Paragraph ellipsis style={{ width: "360px" }}>
-            <Link href={record.url}>
-              {v.split(BOOKMARK_CUSTOM_SPLIT)[0]?.trim()}
-            </Link>
-          </Paragraph>
-        </Tooltip>
-      ),
+      render: (v, record) => {
+        const sourceTitle = v.split(BOOKMARK_CUSTOM_SPLIT)[0]?.trim();
+        return (
+          <Tooltip title={sourceTitle}>
+            <Paragraph ellipsis style={{ width: "360px" }}>
+              <Link href={record.url}>{sourceTitle}</Link>
+            </Paragraph>
+          </Tooltip>
+        );
+      },
     },
     {
       title: "描述",

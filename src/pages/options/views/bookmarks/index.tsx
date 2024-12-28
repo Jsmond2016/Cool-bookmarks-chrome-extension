@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import "@pages/options/layoutContainer.css";
 import { Button, Space, message, Row, Modal } from "antd";
 
-import Search from "@src/pages/options/views/bookmarks/components/Filter-1/index";
+import Search from "@src/pages/options/views/bookmarks/components/Filter/index";
 import { batchRemove, queryBookmarksByRecent } from "@src/pages/apis";
 import useEditBookmarkModal from "./hooks/useBookmarkModal";
 import useSectionModal, { ModeEnum } from "./hooks/useSectionModal";
