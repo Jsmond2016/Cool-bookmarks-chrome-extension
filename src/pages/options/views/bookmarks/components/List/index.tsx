@@ -97,11 +97,9 @@ const List = (props: IProps) => {
       dataIndex: "description",
       width: 360,
       render: (v, record) => (
-        <Tooltip title={v}>
-          <Paragraph ellipsis style={{ width: "360px" }}>
-            {record.title.split(BOOKMARK_CUSTOM_SPLIT)[1]?.trim()}
-          </Paragraph>
-        </Tooltip>
+        <Paragraph style={{ width: "360px" }}>
+          {record.title.split(BOOKMARK_CUSTOM_SPLIT)[1]?.trim()}
+        </Paragraph>
       ),
     },
     {

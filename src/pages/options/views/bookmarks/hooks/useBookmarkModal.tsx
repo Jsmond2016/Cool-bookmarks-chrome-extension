@@ -74,7 +74,7 @@ const useEditBookmarkModal = () => {
           required
           rules={[{ required: true, message: "请输入书签名" }]}
         >
-          <Input placeholder="请输入书签名" />
+          <Input.TextArea rows={2} placeholder="请输入书签名" />
         </Form.Item>
         <Form.Item
           label="链接"
@@ -82,7 +82,7 @@ const useEditBookmarkModal = () => {
           required
           rules={[{ required: true, message: "链接" }]}
         >
-          <Input placeholder="请输入链接" />
+          <Input.TextArea rows={2} placeholder="请输入链接" />
         </Form.Item>
         <Form.Item label="所属文件夹" name="dirId">
           <ApiSelect />
@@ -95,7 +95,7 @@ const useEditBookmarkModal = () => {
           </Select>
         </Form.Item>
         <Form.Item label="描述" name="description">
-          <Input placeholder="请输入自定义描述" />
+          <Input.TextArea rows={8} placeholder="请输入自定义描述" />
         </Form.Item>
       </Form>
     </Modal>
