@@ -8,3 +8,12 @@ export interface Group {
   // source: string;
   // url: string;
 }
+
+
+export type IBookmarkParam = {
+  id: string;
+  changes: {
+    title: string;
+    url: string;
+  };
+};

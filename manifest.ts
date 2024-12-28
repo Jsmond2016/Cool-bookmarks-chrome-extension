@@ -9,10 +9,10 @@ const manifest: chrome.runtime.ManifestV3 = {
   version: packageJson.version,
   description: packageJson.description,
   options_page: "src/pages/options/index.html",
-  // background: {
-  //   service_worker: "src/pages/background/index.js",
-  //   type: "module",
-  // },
+  background: {
+    service_worker: "src/pages/background/index.js",
+    type: "module",
+  },
   action: {
     default_popup: "src/pages/popup/index.html",
     default_icon: "icon-34.png",
@@ -43,9 +43,7 @@ const manifest: chrome.runtime.ManifestV3 = {
       matches: ["*://*/*"],
     },
   ],
-  permissions: [
-    "bookmarks"
-  ]
+  permissions: ["bookmarks", "tabs", "activeTab", "scripting", "notifications"],
 };
 
 export default manifest;

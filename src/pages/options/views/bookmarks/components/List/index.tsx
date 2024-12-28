@@ -11,7 +11,7 @@ import {
   Typography,
   Tooltip,
 } from "antd";
-import { removeBookmark } from "@src/pages/options/api";
+import { removeBookmark } from "@src/pages/apis";
 import { useGroupListStore } from "@src/pages/store";
 
 const { Paragraph, Link } = Typography;

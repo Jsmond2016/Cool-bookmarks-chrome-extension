@@ -3,7 +3,7 @@ import "@pages/options/layoutContainer.css";
 import { Button, Space, message, Row, Modal } from "antd";
 
 import Search from "@src/pages/options/views/bookmarks/components/filter/index";
-import { batchRemove, queryBookmarksByRecent } from "@pages/options/api";
+import { batchRemove, queryBookmarksByRecent } from "@src/pages/apis";
 import useEditBookmarkModal from "./hooks/useBookmarkModal";
 import useSectionModal, { ModeEnum } from "./hooks/useSectionModal";
 import List from "./components/list";

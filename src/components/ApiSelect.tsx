@@ -1,6 +1,6 @@
 import { Select, SelectProps } from "antd";
 import { useEffect } from "react";
-import { getGroupList } from "@src/pages/options/api";
+import { getGroupList } from "@src/pages/apis";
 import { useGroupListStore } from "@src/pages/store";
 import { LabeledValue } from "antd/es/select";
 

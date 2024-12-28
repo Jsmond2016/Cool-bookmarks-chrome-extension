@@ -13,7 +13,7 @@ import dayjs from "dayjs";
 import type { Dayjs } from "dayjs";
 import { useEffect, useState } from "react";
 import useSectionModal, { ModeEnum } from "../bookmarks/hooks/useSectionModal";
-import * as api from "../../api";
+import * as api from "@src/pages/apis";
 
 const formItemLayout = {
   labelCol: { span: 8 },
@@ -64,8 +64,6 @@ const Index = () => {
     }
   };
 
-
-
   const columns = [
     {
       title: "片段名",
@@ -74,12 +72,16 @@ const Index = () => {
     {
       title: "创建时间",
       dataIndex: "createdDate",
-      render: v => new Date(v).toLocaleDateString()
+      render: (v) => new Date(v).toLocaleDateString(),
     },
     {
       title: "书签详情",
       dataIndex: "list",
-      render: (value) => <a onClick={() => editSectionModal(value, ModeEnum.PREVIEW, () => {})}>点击查看详情</a>,
+      render: (value) => (
+        <a onClick={() => editSectionModal(value, ModeEnum.PREVIEW, () => {})}>
+          点击查看详情
+        </a>
+      ),
     },
   ];
 

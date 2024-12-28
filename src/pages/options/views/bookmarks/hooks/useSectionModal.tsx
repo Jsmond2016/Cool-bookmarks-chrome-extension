@@ -10,7 +10,7 @@ import {
   Row,
   Col,
 } from "antd";
-import * as api from "../../../api";
+import * as api from "@src/pages/apis";
 import { buildShortUUID } from "../../../utils";
 import { IBookMark } from "..";
 import {
@@ -174,9 +174,7 @@ const DefaultPreveiwList = ({ list }) => (
       <List.Item>
         <Row justify="space-between">
           <a href={item.url}>{item.bookmarkName}</a>
-          <MinusCircleOutlined
-            style={{ fontSize: "16px", color: "#08c" }}
-          />
+          <MinusCircleOutlined style={{ fontSize: "16px", color: "#08c" }} />
         </Row>
       </List.Item>
     )}

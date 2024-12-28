@@ -1,6 +1,6 @@
 import { useRef, useState } from "react";
 import { Modal, Form, message } from "antd";
-import * as api from "../../../api";
+import * as api from "@src/pages/apis";
 import { IBookMark } from "../";
 import ApiSelect from "@src/components/ApiSelect";
 
