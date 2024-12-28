@@ -6,7 +6,7 @@ import Search from "@src/pages/options/views/bookmarks/components/filter/index";
 import { batchRemove, queryBookmarksByRecent } from "@src/pages/apis";
 import useEditBookmarkModal from "./hooks/useBookmarkModal";
 import useSectionModal, { ModeEnum } from "./hooks/useSectionModal";
-import List from "./components/list";
+import List from "./components/list/index";
 import useBatchEditMarkModal from "./hooks/useBatchEditMarkModal";
 import { useGroupListStore } from "@src/pages/store";
 
