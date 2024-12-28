@@ -17,7 +17,11 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: "22.12.0" # 你可以根据需要调整 Node.js 版本
-          cache: "pnpm"
+
+      - name: Install pnpm
+        uses: pnpm/action-setup-pnpm@v2
+        with:
+          version: 9.15.0 # 你可以根据需要调整 pnpm 版本
 
       - name: Cache pnpm modules
         uses: actions/cache@v3
