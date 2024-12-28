@@ -30,6 +30,7 @@ const useSelectedRow = () => {
     onChange: (selectedRowKeys: React.Key[], selectedRows: IBookMark[]) => {
       setSelectedRows(selectedRows);
     },
+    selectedRowKeys: selectedRows.map((v) => v.id),
     onSelectAll: (selected, selectedRows, changeRows) => {
       setSelectedRows(selectedRows);
     },
@@ -46,7 +47,7 @@ const useSelectedRow = () => {
 
 const usePager = () => {
   const [current, setCurrent] = useState(1);
-  const [pageSize, setPageSize] = useState(10);
+  const [pageSize, setPageSize] = useState(30);
   const onChange = (page, pageSize) => {
     setPageSize(pageSize);
     setCurrent(page);
@@ -54,7 +55,7 @@ const usePager = () => {
 
   const setDefaultPager = () => {
     setCurrent(1);
-    setPageSize(10);
+    setPageSize(30);
   };
 
   return {
@@ -120,7 +121,10 @@ const Bookmarks: React.FC = () => {
   const batchEdit = async () => {
     // selectedRows
     const ids = selectedRows.map((item) => item.id) as string[];
-    editBatchEditModal(ids, refreshList);
+    editBatchEditModal(ids, () => {
+      refreshList();
+      resetSelectedRows();
+    });
   };
 
   const { editBookmarkModal, modalElement } = useEditBookmarkModal();
@@ -138,14 +142,6 @@ const Bookmarks: React.FC = () => {
           <Space size="middle" direction="horizontal">
             <Button
               type="primary"
-              danger
-              onClick={batchDelete}
-              disabled={selectedRows.length === 0}
-            >
-              批量删除
-            </Button>
-            <Button
-              type="primary"
               onClick={batchEdit}
               disabled={selectedRows.length === 0}
             >
@@ -159,6 +155,14 @@ const Bookmarks: React.FC = () => {
               disabled={selectedRows.length === 0}
             >
               创建片段
+            </Button>
+            <Button
+              type="primary"
+              danger
+              onClick={batchDelete}
+              disabled={selectedRows.length === 0}
+            >
+              批量删除
             </Button>
           </Space>
         </Row>

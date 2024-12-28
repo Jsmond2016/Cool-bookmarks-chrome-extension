@@ -38,6 +38,7 @@ const List = (props: IProps) => {
     pageSize,
     onPageChange,
   } = props;
+
   const storeContext = useContext(StoreContext);
   const { store, dispatch } = storeContext;
 
@@ -141,6 +142,7 @@ const List = (props: IProps) => {
     pageSize,
     onChange: onPageChange,
     showTotal,
+    pageSizeOptions: [10, 20, 30, 40, 50],
   };
 
   return (
