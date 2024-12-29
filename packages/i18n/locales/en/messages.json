@@ -1,11 +1,11 @@
 {
   "extensionDescription": {
     "description": "Extension description",
-    "message": "Chrome extension boilerplate developed with Vite, React and Typescript"
+    "message": "Cool bookmarks manager is a useful tool help to manage your bookmarks and export them to markdown file."
   },
   "extensionName": {
     "description": "Extension name",
-    "message": "Chrome extension boilerplate"
+    "message": "Cool bookmarks"
   },
   "toggleTheme": {
     "message": "Toggle theme"
