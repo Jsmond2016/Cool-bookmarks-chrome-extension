@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 // import "@pages/popup/Popup.css";
-import { Button, Card, ConfigProvider, Form, Input, Row, Space } from 'antd';
+import { Button, Card, ConfigProvider, Form, Input, Row } from 'antd';
 import { ApiSelect } from '@extension/components';
 import * as Apis from '@extension/service';
 import { to } from 'await-to-js';
@@ -113,6 +113,12 @@ const Popup = () => {
           },
         }}>
         <Form form={form} preserve={false} layout="vertical">
+          <Form.Item
+            name="parentId"
+            label="保存目标文件夹"
+            rules={[{ required: true, message: '请输入保存目标文件夹' }]}>
+            <ApiSelect />
+          </Form.Item>
           <Form.Item name="id" hidden>
             <Input />
           </Form.Item>
@@ -128,19 +134,10 @@ const Popup = () => {
             rules={[{ required: true, message: '请输入读后感评价和描述' }]}>
             <Input.TextArea rows={3} />
           </Form.Item>
-          <Form.Item
-            name="parentId"
-            label="保存目标文件夹"
-            rules={[{ required: true, message: '请输入保存目标文件夹' }]}>
-            <ApiSelect />
-          </Form.Item>
           <Row justify="end">
-            <Space size="middle">
-              <Button>取消</Button>
-              <Button type="primary" onClick={handleSave}>
-                保存
-              </Button>
-            </Space>
+            <Button type="primary" onClick={handleSave}>
+              保存
+            </Button>
           </Row>
         </Form>
       </ConfigProvider>
