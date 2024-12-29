@@ -1,0 +1,19 @@
+{
+  "name": "@extension/service",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/index.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dayjs": "^1.11.13",
+    "@extension/utils": "workspace:*"
+  },
+  "devDependencies": {
+    "@extension/types": "workspace:*"
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "extends": "@extension/tsconfig/base",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "noImplicitAny": false, // 允许隐式 any
+    "paths": {
+      "@src/*": ["src/*"]
+    },
+    "types": ["chrome", "../../vite-env.d.ts"]
+  },
+  "include": ["src"]
+}
