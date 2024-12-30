@@ -128,10 +128,7 @@ const Popup = () => {
           <Form.Item name="title" label="当前页面标题" rules={[{ required: true, message: '请输入当前页面标题' }]}>
             <Input.TextArea rows={2} />
           </Form.Item>
-          <Form.Item
-            name="customDescription"
-            label="读后感评价和描述"
-            rules={[{ required: true, message: '请输入读后感评价和描述' }]}>
+          <Form.Item name="customDescription" label="读后感评价和描述">
             <Input.TextArea rows={3} />
           </Form.Item>
           <Row justify="end">
