@@ -1,11 +1,10 @@
 import type { ColumnsType, TableProps } from 'antd/es/table';
 import type { IBookMark } from '../..';
-import { useMemo } from 'react';
+import { useEffect, useState } from 'react';
 import Table from 'antd/es/table';
 import type { PaginationProps } from 'antd';
 import { Button, Modal, Space, message, Typography, Tooltip } from 'antd';
-import { removeBookmark } from '@extension/service';
-import { useGroupListStore } from '@extension/store';
+import { getGroupList, removeBookmark } from '@extension/service';
 import { BOOKMARK_CUSTOM_SPLIT } from '@extension/constants';
 
 const { Paragraph, Link } = Typography;
@@ -23,14 +22,13 @@ export type IProps = {
 const List = (props: IProps) => {
   const { editBookmark, list, rowSelection, refreshList, current, pageSize, onPageChange } = props;
 
-  const { groupList } = useGroupListStore();
+  const [groupListMap, setGroupListMap] = useState(new Map<string, string>());
 
-  const groupListMap = useMemo(() => {
-    return groupList.reduce((pre, cur) => {
-      pre.set(cur.id, cur.title);
-      return pre;
-    }, new Map());
-  }, [groupList]);
+  useEffect(() => {
+    getGroupList().then(bookmarks => {
+      setGroupListMap(new Map(bookmarks.map(bookmark => [bookmark.id, bookmark.title])));
+    });
+  }, []);
 
   const copyBookmark = async (record: IBookMark) => {
     const { url, title } = record;

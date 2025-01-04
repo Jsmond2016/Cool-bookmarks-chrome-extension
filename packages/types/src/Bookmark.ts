@@ -27,3 +27,24 @@ export interface IBookMark {
   title: string;
   url: string;
 }
+
+export enum DirTypeEnum {
+  Exist = 0,
+  New = 1,
+}
+
+export const DirTypeOptions = {
+  [DirTypeEnum.Exist]: '选择已有目录',
+  [DirTypeEnum.New]: '新建目录',
+} as const;
+
+export interface EditBookmark {
+  dirType: DirTypeEnum;
+  parentId: string;
+  newDir: string;
+  customDescription: string;
+
+  id: string;
+  title: string;
+  url: string;
+}

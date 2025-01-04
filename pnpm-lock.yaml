@@ -573,12 +573,36 @@ importers:
 
   pages/side-panel:
     dependencies:
+      '@extension/components':
+        specifier: workspace:*
+        version: link:../../packages/components
+      '@extension/constants':
+        specifier: workspace:*
+        version: link:../../packages/constants
+      '@extension/service':
+        specifier: workspace:*
+        version: link:../../packages/service
       '@extension/shared':
         specifier: workspace:*
         version: link:../../packages/shared
       '@extension/storage':
         specifier: workspace:*
         version: link:../../packages/storage
+      '@extension/types':
+        specifier: workspace:*
+        version: link:../../packages/types
+      ahooks:
+        specifier: ^3.8.4
+        version: 3.8.4(react@18.3.1)
+      antd:
+        specifier: ^5.22.7
+        version: 5.22.7(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      await-to-js:
+        specifier: ^3.0.0
+        version: 3.0.0
+      ramda:
+        specifier: ^0.30.1
+        version: 0.30.1
     devDependencies:
       '@extension/tailwindcss-config':
         specifier: workspace:*
@@ -589,6 +613,9 @@ importers:
       '@extension/vite-config':
         specifier: workspace:*
         version: link:../../packages/vite-config
+      '@types/ramda':
+        specifier: ^0.30.2
+        version: 0.30.2
       cross-env:
         specifier: ^7.0.3
         version: 7.0.3
@@ -1757,6 +1784,12 @@ packages:
   agent-base@7.1.1:
     resolution: {integrity: sha512-H0TSyFNDMomMNJQBn8wFV5YC/2eJ+VXECwOadZJT554xP6cODZHPX3H9QMQECxvrgiSOP1pHjy1sMWQVYJOUOA==}
     engines: {node: '>= 14'}
+
+  ahooks@3.8.4:
+    resolution: {integrity: sha512-39wDEw2ZHvypaT14EpMMk4AzosHWt0z9bulY0BeDsvc9PqJEV+Kjh/4TZfftSsotBMq52iYIOFPd3PR56e0ZJg==}
+    engines: {node: '>=8.0.0'}
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0
 
   ajv-keywords@3.5.2:
     resolution: {integrity: sha512-5p6WTN0DdTGVQk6VjcEju19IgaHudalcfabD7yhDGeA6bcQnmL+CpveLJq/3hvfwd1aof6L386Ougkx6RfyMIQ==}
@@ -2955,6 +2988,9 @@ packages:
     resolution: {integrity: sha512-NGnrKwXzSms2qUUih/ILZ5JBqNTSa1+ZmP6flaIp6KmSElgE9qdndzS3cqjrDovwFdmwsGsLdeFgB6suw+1e9g==}
     engines: {node: '>= 0.4'}
 
+  intersection-observer@0.12.2:
+    resolution: {integrity: sha512-7m1vEcPCxXYI8HqnL8CKI6siDyD+eIWSwgB3DZA+ZTogxk9I4CDnj4wilt9x/+/QbHI4YG5YZNmC6458/e9Ktg==}
+
   ip-address@9.0.5:
     resolution: {integrity: sha512-zHtQzGojZXTwZTHQqra+ETKd4Sn3vgi7uBmlPoXVWZqYvuKmtI0l/VZTjqGmJY9x88GGOaZ9+G9ES8hC4T4X8g==}
     engines: {node: '>= 12'}
@@ -3169,6 +3205,10 @@ packages:
   jiti@1.21.6:
     resolution: {integrity: sha512-2yTgeWTWzMWkHu6Jp9NKgePDaYHbntiwvYuuJLbbN9vl7DC9DvXKOB2BC3ZZ92D3cvV/aflH0osDfwpHepQ53w==}
     hasBin: true
+
+  js-cookie@3.0.5:
+    resolution: {integrity: sha512-cEiJEAEoIbWfCZYKWhVwFuvPX1gETRYPw6LlaTKoxD3s2AkXzkCjnp6h0V77ozyqj0jakteJ4YqDJT830+lVGw==}
+    engines: {node: '>=14'}
 
   js-tokens@4.0.0:
     resolution: {integrity: sha512-RdJUflcE3cUzKiMqQgsCu06FPu9UdIJO0beYbPhHN4k6apgJtifcoCtT9bcxOpYBtpD2kCM6Sbzg4CausW/PKQ==}
@@ -4033,6 +4073,9 @@ packages:
     peerDependencies:
       react: ^18.3.1
 
+  react-fast-compare@3.2.2:
+    resolution: {integrity: sha512-nsO+KSNgo1SbJqJEYRE9ERzo7YtYbou/OqjSQKxV7jcKox7+usiUVZOAC+XnDOABXggQTno0Y1CpVnuWEc1boQ==}
+
   react-is@16.13.1:
     resolution: {integrity: sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==}
 
@@ -4206,6 +4249,10 @@ packages:
   schema-utils@3.3.0:
     resolution: {integrity: sha512-pN/yOAvcC+5rQ5nERGuwrjLlYvLTbCibnZ1I7B1LaiAz9BRBlE9GMgE/eqV30P7aJQUf7Ddimy/RsbYO/GrVGg==}
     engines: {node: '>= 10.13.0'}
+
+  screenfull@5.2.0:
+    resolution: {integrity: sha512-9BakfsO2aUQN2K9Fdbj87RJIEZ82Q9IGim7FqM5OsebfoFC6ZHXgDq/KvniuLTPdeM8wY2o6Dj3WQ7KeQCj3cA==}
+    engines: {node: '>=0.10.0'}
 
   scroll-into-view-if-needed@3.1.0:
     resolution: {integrity: sha512-49oNpRjWRvnU8NyGVmUaYG4jtTkNonFZI86MmGRDqBphEK2EXT9gdEUoQPZhuBM8yWHxCWbobltqYO5M4XrUvQ==}
@@ -6148,6 +6195,19 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
+  ahooks@3.8.4(react@18.3.1):
+    dependencies:
+      '@babel/runtime': 7.26.0
+      dayjs: 1.11.13
+      intersection-observer: 0.12.2
+      js-cookie: 3.0.5
+      lodash: 4.17.21
+      react: 18.3.1
+      react-fast-compare: 3.2.2
+      resize-observer-polyfill: 1.5.1
+      screenfull: 5.2.0
+      tslib: 2.7.0
+
   ajv-keywords@3.5.2(ajv@6.12.6):
     dependencies:
       ajv: 6.12.6
@@ -7688,6 +7748,8 @@ snapshots:
       hasown: 2.0.2
       side-channel: 1.0.6
 
+  intersection-observer@0.12.2: {}
+
   ip-address@9.0.5:
     dependencies:
       jsbn: 1.1.0
@@ -7899,6 +7961,8 @@ snapshots:
       supports-color: 8.1.1
 
   jiti@1.21.6: {}
+
+  js-cookie@3.0.5: {}
 
   js-tokens@4.0.0: {}
 
@@ -8843,6 +8907,8 @@ snapshots:
       react: 18.3.1
       scheduler: 0.23.2
 
+  react-fast-compare@3.2.2: {}
+
   react-is@16.13.1: {}
 
   react-is@18.3.1: {}
@@ -9052,6 +9118,8 @@ snapshots:
       '@types/json-schema': 7.0.15
       ajv: 6.12.6
       ajv-keywords: 3.5.2(ajv@6.12.6)
+
+  screenfull@5.2.0: {}
 
   scroll-into-view-if-needed@3.1.0:
     dependencies:

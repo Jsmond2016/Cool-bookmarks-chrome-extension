@@ -26,7 +26,10 @@ const useEditBookmarkModal = () => {
 
   const openModalAndSetValues = (values: IBookMark, cb: () => void) => {
     setModalVisible(true);
-    const [sourceTitle, customDescription] = values.title.split(BOOKMARK_CUSTOM_SPLIT);
+    let [sourceTitle, customDescription] = ['', ''];
+    if (values.title.includes(BOOKMARK_CUSTOM_SPLIT)) {
+      [sourceTitle, customDescription] = values.title.split(BOOKMARK_CUSTOM_SPLIT);
+    }
     const formValues = {
       ...values,
       title: sourceTitle,

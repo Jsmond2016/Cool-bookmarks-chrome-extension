@@ -7,6 +7,7 @@ import { to } from 'await-to-js';
 import { BOOKMARK_CUSTOM_SPLIT } from '@extension/constants';
 const Popup = () => {
   const [form] = Form.useForm();
+
   const handleSave = async () => {
     console.log('cool-bookmark-save');
     const values = await form.validateFields();
