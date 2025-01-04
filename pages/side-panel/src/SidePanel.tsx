@@ -1,33 +1,26 @@
 import '@src/SidePanel.css';
 import { withErrorBoundary, withSuspense } from '@extension/shared';
 import { useEffect } from 'react';
-import { Button, Card, ConfigProvider, Form, Input, Radio, Row } from 'antd';
+import { Button, Card, ConfigProvider, Form, Input, Radio, Row, Select } from 'antd';
 import { ApiSelect } from '@extension/components';
 import * as Apis from '@extension/service';
 import { to } from 'await-to-js';
-import { BOOKMARK_CUSTOM_SPLIT } from '@extension/constants';
 import { toPairs } from 'ramda';
 import type { EditBookmark } from '@extension/types';
-import { DirTypeEnum, DirTypeOptions } from '@extension/types';
+import { DirTypeEnum, DirTypeOptions, PriorityEnum, PriorityOptions } from '@extension/types';
+import { getCustomTitle } from '@extension/utils';
 
 const SidePanel = () => {
   const [form] = Form.useForm<EditBookmark>();
 
   const handleSave = async () => {
     const values = await form.validateFields();
-    if (values.id) {
-      const { id, title, customDescription, url } = values;
-      const newTitle = `${title}${BOOKMARK_CUSTOM_SPLIT}${customDescription}`;
-      await Apis.updateBookmark({ id, changes: { title: newTitle, url } });
-      return;
-    }
     chrome.runtime.sendMessage(
       {
-        type: 'saveBookmark',
+        type: 'saveSidePanelBookmark',
         payload: values,
       },
       response => {
-        console.log('saveBookmark response', response);
         if (response.status === 'success') {
           // 当成功时，弹出 成功提示，关闭 popup
           chrome.notifications.create({
@@ -66,14 +59,15 @@ const SidePanel = () => {
         if (isExist) {
           // 存在-则解析 url，title，description
 
-          const { id, title, url, parentId } = bookmarks[0];
-          const [sourceTitle, customDescription] = title.split(BOOKMARK_CUSTOM_SPLIT);
+          const { id, url, parentId } = bookmarks[0];
+          // const [sourceTitle, description] = title.split(BOOKMARK_CUSTOM_SPLIT);
+          const { title, description } = getCustomTitle(bookmarks[0].title);
           form.setFieldsValue({
             id,
             parentId,
-            title: sourceTitle,
+            title,
             url,
-            customDescription,
+            description,
           });
           return;
         }
@@ -119,7 +113,10 @@ const SidePanel = () => {
         }}>
         <Form form={form} preserve={false} layout="vertical">
           <Form.Item rules={[{ required: true }]} label="文件夹选项" name="dirType" initialValue={DirTypeEnum.Exist}>
-            <Radio.Group options={toPairs(DirTypeOptions).map(([key, label]) => ({ label, value: +key }))} />
+            <Radio.Group
+              onChange={() => form.setFieldValue('dirType', undefined)}
+              options={toPairs(DirTypeOptions).map(([key, label]) => ({ label, value: +key }))}
+            />
           </Form.Item>
           <Form.Item name="parentId" label="父级文件夹" rules={[{ required: true }]}>
             <ApiSelect />
@@ -145,7 +142,17 @@ const SidePanel = () => {
           <Form.Item name="title" label="当前页面标题" rules={[{ required: true, message: '请输入当前页面标题' }]}>
             <Input.TextArea rows={2} />
           </Form.Item>
-          <Form.Item name="customDescription" label="读后感评价和描述">
+          <Form.Item label="优先级" name="priority" initialValue={PriorityEnum.Higher}>
+            <Select
+              options={toPairs(PriorityOptions)
+                .toSorted((a, b) => b[0] - a[0])
+                .map(([key, label]) => ({ value: +key, label }))}
+            />
+          </Form.Item>
+          <Form.Item name="aiSummary" label="AI总结">
+            <Input.TextArea rows={3} />
+          </Form.Item>
+          <Form.Item name="description" label="读后感评价和描述">
             <Input.TextArea rows={3} />
           </Form.Item>
           <Row justify="end">

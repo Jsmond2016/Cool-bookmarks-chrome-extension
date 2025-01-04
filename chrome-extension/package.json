@@ -20,9 +20,11 @@
     "@extension/shared": "workspace:*",
     "@extension/storage": "workspace:*",
     "@extension/constants": "workspace:*",
-    "@extension/service": "workspace:*"
+    "@extension/service": "workspace:*",
+    "@extension/utils": "workspace:*"
   },
   "devDependencies": {
+    "@extension/types": "workspace:*",
     "@extension/dev-utils": "workspace:*",
     "@extension/hmr": "workspace:*",
     "@extension/tsconfig": "workspace:*",

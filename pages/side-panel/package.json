@@ -25,6 +25,7 @@
     "@extension/shared": "workspace:*",
     "@extension/storage": "workspace:*",
     "@extension/types": "workspace:*",
+    "@extension/utils": "workspace:*",
     "ahooks": "^3.8.4",
     "antd": "^5.22.7",
     "await-to-js": "^3.0.0",

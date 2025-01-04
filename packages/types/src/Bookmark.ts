@@ -13,7 +13,7 @@ export type IBookmarkParam = {
   id: string;
   changes: {
     title: string;
-    url: string;
+    url?: string;
   };
 };
 
@@ -38,11 +38,29 @@ export const DirTypeOptions = {
   [DirTypeEnum.New]: '新建目录',
 } as const;
 
+// 优先级
+export enum PriorityEnum {
+  Highest = 999,
+  Higher = 888,
+  Medium = 777,
+  Low = 666,
+  Lower = 555,
+}
+export const PriorityOptions = {
+  [PriorityEnum.Highest]: '高',
+  [PriorityEnum.Higher]: '较高',
+  [PriorityEnum.Medium]: '中',
+  [PriorityEnum.Low]: '低',
+  [PriorityEnum.Lower]: '较低',
+} as const;
+
 export interface EditBookmark {
   dirType: DirTypeEnum;
   parentId: string;
-  newDir: string;
-  customDescription: string;
+  newDir?: string;
+  description: string;
+  priority: PriorityEnum;
+  aiSummary: string;
 
   id: string;
   title: string;

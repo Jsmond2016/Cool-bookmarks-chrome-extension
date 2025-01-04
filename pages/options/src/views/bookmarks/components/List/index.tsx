@@ -5,7 +5,7 @@ import Table from 'antd/es/table';
 import type { PaginationProps } from 'antd';
 import { Button, Modal, Space, message, Typography, Tooltip } from 'antd';
 import { getGroupList, removeBookmark } from '@extension/service';
-import { BOOKMARK_CUSTOM_SPLIT } from '@extension/constants';
+import { getCustomTitle } from '@extension/utils';
 
 const { Paragraph, Link } = Typography;
 
@@ -62,22 +62,28 @@ const List = (props: IProps) => {
       dataIndex: 'title',
       width: 360,
       render: (v, record) => {
-        const sourceTitle = v.split(BOOKMARK_CUSTOM_SPLIT)[0]?.trim();
+        const { description, title } = getCustomTitle(record.title);
         return (
-          <Tooltip title={sourceTitle}>
+          <Tooltip title={description}>
             <Paragraph ellipsis style={{ width: '360px' }}>
-              <Link href={record.url}>{sourceTitle}</Link>
+              <Link href={record.url}>{title}</Link>
             </Paragraph>
           </Tooltip>
         );
       },
     },
     {
+      title: 'AI总结',
+      dataIndex: 'aiSummary',
+      width: 360,
+      render: (v, record) => <Paragraph style={{ width: '360px' }}>{getCustomTitle(record.title).aiSummary}</Paragraph>,
+    },
+    {
       title: '描述',
       dataIndex: 'description',
       width: 360,
       render: (v, record) => (
-        <Paragraph style={{ width: '360px' }}>{record.title.split(BOOKMARK_CUSTOM_SPLIT)[1]?.trim()}</Paragraph>
+        <Paragraph style={{ width: '360px' }}>{getCustomTitle(record.title).description}</Paragraph>
       ),
     },
     {
@@ -133,6 +139,8 @@ const List = (props: IProps) => {
     showTotal,
     pageSizeOptions: [10, 20, 30, 40, 50],
   };
+
+  console.log('list 1111 ==>>> ', list);
 
   return (
     <Table<IBookMark>

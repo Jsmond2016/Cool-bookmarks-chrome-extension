@@ -1,5 +1,8 @@
+import { PriorityEnum, type EditBookmark } from '@extension/types';
+import { BOOKMARK_CUSTOM_SPLIT } from '@extension/constants';
+
 // 链接：https://juejin.cn/post/7184359234060943421
-function buildShortUUID() {
+export function buildShortUUID() {
   let unique = 0;
   const time = Date.now();
   const random = Math.floor(Math.random() * 1000000000);
@@ -8,7 +11,7 @@ function buildShortUUID() {
   return random + unique + String(time);
 }
 
-const sourceMap = {
+export const sourceMap = {
   'zhihu.com': '知乎',
   'github.com': 'github',
   'github.io': 'github',
@@ -21,7 +24,7 @@ const sourceMap = {
   others: '其他',
 };
 
-const sourceRender = (url: string) => {
+export const sourceRender = (url: string) => {
   try {
     const hostname = new URL(url).hostname;
     const address = hostname.split('.').slice(-2).join('.');
@@ -33,4 +36,36 @@ const sourceRender = (url: string) => {
   }
 };
 
-export { buildShortUUID, sourceRender, sourceMap };
+type CustomTitle = Pick<EditBookmark, 'aiSummary' | 'priority' | 'title' | 'description'>;
+export const setCustomTitle = (params: CustomTitle): string => {
+  const { title, description, aiSummary, priority } = params;
+
+  // 没有设置自定义选项，则只保存标题
+  if ([description, aiSummary, priority].every(v => !v)) {
+    return title;
+  }
+
+  const searchParams = new URLSearchParams({ description, aiSummary, priority: String(priority) });
+  return `${title}${BOOKMARK_CUSTOM_SPLIT}?${searchParams.toString()}`;
+};
+
+export const getCustomTitle = (sourceTitle: string): CustomTitle => {
+  const [title, customParams] = sourceTitle.split(BOOKMARK_CUSTOM_SPLIT);
+  // 没有自定义选项，则只返回标题
+  if (!customParams) {
+    return {
+      title,
+      description: '',
+      aiSummary: '',
+      priority: PriorityEnum.Medium,
+    };
+  }
+
+  const searchParams = Object.fromEntries(new URLSearchParams(customParams) as any);
+  const { priority, ...rest } = searchParams as CustomTitle;
+  return {
+    ...rest,
+    title,
+    priority: +priority,
+  };
+};

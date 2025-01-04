@@ -1,23 +1,19 @@
 import { useRef, useState } from 'react';
 import { Modal, Input, Form, message, Select } from 'antd';
 import * as api from '@extension/service';
-import { sourceMap } from '@extension/utils';
-import type { IBookMark } from '@extension/types';
+import { getCustomTitle, setCustomTitle, sourceMap } from '@extension/utils';
+import { PriorityEnum, PriorityOptions, type IBookMark } from '@extension/types';
 import { ApiSelect } from '@extension/components';
-import { BOOKMARK_CUSTOM_SPLIT } from '@extension/constants';
+import { toPairs } from 'ramda';
 
 const useEditBookmarkModal = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [form] = Form.useForm();
 
   const setFormFields = (defaultValues: IBookMark) => {
-    const { title, description, url, source, id, parentId } = defaultValues;
+    const { parentId, ...rest } = defaultValues;
     form.setFieldsValue({
-      title,
-      description,
-      url,
-      source,
-      id,
+      ...rest,
       dirId: parentId,
     });
   };
@@ -26,14 +22,12 @@ const useEditBookmarkModal = () => {
 
   const openModalAndSetValues = (values: IBookMark, cb: () => void) => {
     setModalVisible(true);
-    let [sourceTitle, customDescription] = ['', ''];
-    if (values.title.includes(BOOKMARK_CUSTOM_SPLIT)) {
-      [sourceTitle, customDescription] = values.title.split(BOOKMARK_CUSTOM_SPLIT);
-    }
+    const { title, description, aiSummary } = getCustomTitle(values.title);
     const formValues = {
       ...values,
-      title: sourceTitle,
-      description: customDescription || '',
+      title,
+      description,
+      aiSummary,
     };
     setFormFields(formValues);
     onSuccessCBRef.current = cb;
@@ -41,10 +35,10 @@ const useEditBookmarkModal = () => {
 
   const updateBookmark = async () => {
     const values = await form.validateFields();
-    const { id, title, url, dirId, description } = values;
-    const newTitle = `${title}${BOOKMARK_CUSTOM_SPLIT}${description}`;
+    const { id, url, dirId } = values;
+    const title = setCustomTitle(values);
     try {
-      await api.updateBookmark({ id, changes: { title: newTitle, url } });
+      await api.updateBookmark({ id, changes: { title, url } });
       if (dirId) {
         await api.moveBookmark(id, dirId);
       }
@@ -82,6 +76,16 @@ const useEditBookmarkModal = () => {
             optionFilterProp="label"
             options={[...new Set(Object.values(sourceMap))].map(v => ({ value: v, label: v }))}
           />
+        </Form.Item>
+        <Form.Item label="优先级" name="priority" initialValue={PriorityEnum.Higher}>
+          <Select
+            options={toPairs(PriorityOptions)
+              .toSorted((a, b) => b[0] - a[0])
+              .map(([key, label]) => ({ value: +key, label }))}
+          />
+        </Form.Item>
+        <Form.Item name="aiSummary" label="AI总结">
+          <Input.TextArea rows={3} />
         </Form.Item>
         <Form.Item label="描述" name="description">
           <Input.TextArea rows={8} placeholder="请输入自定义描述" />
