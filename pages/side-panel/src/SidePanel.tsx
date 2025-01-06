@@ -114,7 +114,7 @@ const SidePanel = () => {
         <Form form={form} preserve={false} layout="vertical">
           <Form.Item rules={[{ required: true }]} label="文件夹选项" name="dirType" initialValue={DirTypeEnum.Exist}>
             <Radio.Group
-              onChange={() => form.setFieldValue('dirType', undefined)}
+              onChange={() => form.setFieldValue('newDir', undefined)}
               options={toPairs(DirTypeOptions).map(([key, label]) => ({ label, value: +key }))}
             />
           </Form.Item>

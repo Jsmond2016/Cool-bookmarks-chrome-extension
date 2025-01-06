@@ -9,8 +9,6 @@ import type { EditBookmark } from '@extension/types';
 import { DirTypeEnum, DirTypeOptions, PriorityEnum, PriorityOptions } from '@extension/types';
 import { toPairs } from 'ramda';
 const Popup = () => {
-  return null;
-
   const [form] = Form.useForm();
 
   const handleSave = async () => {
@@ -114,7 +112,7 @@ const Popup = () => {
         <Form form={form} preserve={false} layout="vertical">
           <Form.Item rules={[{ required: true }]} label="文件夹选项" name="dirType" initialValue={DirTypeEnum.Exist}>
             <Radio.Group
-              onChange={() => form.setFieldValue('dirType', undefined)}
+              onChange={() => form.setFieldValue('newDir', undefined)}
               options={toPairs(DirTypeOptions).map(([key, label]) => ({ label, value: +key }))}
             />
           </Form.Item>
