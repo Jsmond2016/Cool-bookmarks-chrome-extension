@@ -3,7 +3,7 @@ import { exampleThemeStorage } from '@extension/storage';
 import { BOOKMARK_CUSTOM_SPLIT } from '@extension/constants';
 import * as Apis from '@extension/service';
 import type { EditBookmark } from '@extension/types';
-import { setCustomTitle } from '@extension/utils';
+import { getCustomTitle, setCustomTitle } from '@extension/utils';
 
 exampleThemeStorage.get().then(theme => {
   console.log('theme', theme);
@@ -26,17 +26,10 @@ chrome.runtime.onMessage.addListener(async (message, sender, sendResponse) => {
     console.log('Received bookmark data:', message.payload);
     // 处理保存书签的逻辑
     // 例如，保存到存储中
-    const bookmarks = message.payload as {
-      customDescription: string;
-      parentId: string;
-      title: string;
-      url: string;
-    };
-    const { customDescription, parentId, url } = bookmarks;
+    const bookmarks = message.payload as EditBookmark;
+    const { parentId, url } = bookmarks;
     // 如果添加了自定义描述，则修改书签标题，后面添加 __DESC__${customDescription}
-    const newTitle = customDescription
-      ? `${bookmarks.title}${BOOKMARK_CUSTOM_SPLIT}${customDescription}`
-      : bookmarks.title;
+    const newTitle = setCustomTitle(bookmarks);
     await Apis.createBookmark({ id: parentId, changes: { title: newTitle, url } });
     sendResponse({ status: 'success' });
     return true; // 表示异步响应
@@ -79,4 +72,12 @@ chrome.runtime.onMessage.addListener(async (message, sender, sendResponse) => {
     sendResponse({ status: 'success' });
     return true; // 表示异步响应
   }
+});
+
+chrome.action.onClicked.addListener(() => {
+  console.log('xxxxxxxxxxxxxxxxxxxxxxxxxx');
+  // 我想打开 sidePanel 默认配置，应该如何配置参数
+  chrome.sidePanel.open({
+    tabId: chrome.devtools.inspectedWindow.tabId,
+  });
 });

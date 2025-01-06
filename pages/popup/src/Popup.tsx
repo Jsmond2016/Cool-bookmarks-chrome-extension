@@ -1,22 +1,20 @@
 import React, { useEffect } from 'react';
 // import "@pages/popup/Popup.css";
-import { Button, Card, ConfigProvider, Form, Input, Row } from 'antd';
+import { Button, Card, ConfigProvider, Form, Input, Radio, Row, Select } from 'antd';
 import { ApiSelect } from '@extension/components';
 import * as Apis from '@extension/service';
 import { to } from 'await-to-js';
 import { BOOKMARK_CUSTOM_SPLIT } from '@extension/constants';
+import type { EditBookmark } from '@extension/types';
+import { DirTypeEnum, DirTypeOptions, PriorityEnum, PriorityOptions } from '@extension/types';
+import { toPairs } from 'ramda';
 const Popup = () => {
+  return null;
+
   const [form] = Form.useForm();
 
   const handleSave = async () => {
-    console.log('cool-bookmark-save');
     const values = await form.validateFields();
-    if (values.id) {
-      const { id, title, customDescription, url } = values;
-      const newTitle = `${title}${BOOKMARK_CUSTOM_SPLIT}${customDescription}`;
-      await Apis.updateBookmark({ id, changes: { title: newTitle, url } });
-      return;
-    }
     chrome.runtime.sendMessage(
       {
         type: 'saveBookmark',
@@ -114,11 +112,29 @@ const Popup = () => {
           },
         }}>
         <Form form={form} preserve={false} layout="vertical">
+          <Form.Item rules={[{ required: true }]} label="文件夹选项" name="dirType" initialValue={DirTypeEnum.Exist}>
+            <Radio.Group
+              onChange={() => form.setFieldValue('dirType', undefined)}
+              options={toPairs(DirTypeOptions).map(([key, label]) => ({ label, value: +key }))}
+            />
+          </Form.Item>
           <Form.Item
             name="parentId"
             label="保存目标文件夹"
             rules={[{ required: true, message: '请输入保存目标文件夹' }]}>
             <ApiSelect />
+          </Form.Item>
+          <Form.Item<EditBookmark> noStyle shouldUpdate={(pre, cur) => pre.dirType !== cur.dirType}>
+            {({ getFieldValue }) =>
+              getFieldValue('dirType') === DirTypeEnum.New ? (
+                <Form.Item
+                  name="newDir"
+                  label="新建文件夹名称"
+                  rules={[{ required: getFieldValue('dirType') === DirTypeEnum.New }]}>
+                  <Input />
+                </Form.Item>
+              ) : null
+            }
           </Form.Item>
           <Form.Item name="id" hidden>
             <Input />
@@ -129,7 +145,17 @@ const Popup = () => {
           <Form.Item name="title" label="当前页面标题" rules={[{ required: true, message: '请输入当前页面标题' }]}>
             <Input.TextArea rows={2} />
           </Form.Item>
-          <Form.Item name="customDescription" label="读后感评价和描述">
+          <Form.Item label="优先级" name="priority" initialValue={PriorityEnum.Higher}>
+            <Select
+              options={toPairs(PriorityOptions)
+                .toSorted((a, b) => b[0] - a[0])
+                .map(([key, label]) => ({ value: +key, label }))}
+            />
+          </Form.Item>
+          <Form.Item name="aiSummary" label="AI总结">
+            <Input.TextArea rows={3} />
+          </Form.Item>
+          <Form.Item name="description" label="读后感评价和描述">
             <Input.TextArea rows={3} />
           </Form.Item>
           <Row justify="end">
