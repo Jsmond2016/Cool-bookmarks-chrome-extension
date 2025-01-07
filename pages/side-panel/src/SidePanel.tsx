@@ -1,7 +1,7 @@
 import '@src/SidePanel.css';
 import { withErrorBoundary, withSuspense } from '@extension/shared';
 import { useEffect } from 'react';
-import { Button, Card, ConfigProvider, Form, Input, Radio, Row, Select } from 'antd';
+import { Button, Card, ConfigProvider, Form, Input, Radio, Row, Select, message } from 'antd';
 import { ApiSelect } from '@extension/components';
 import * as Apis from '@extension/service';
 import { to } from 'await-to-js';
@@ -12,7 +12,7 @@ import { getCustomTitle } from '@extension/utils';
 
 const SidePanel = () => {
   const [form] = Form.useForm<EditBookmark>();
-
+  const [messageApi, contextHolder] = message.useMessage();
   const handleSave = async () => {
     const values = await form.validateFields();
     chrome.runtime.sendMessage(
@@ -20,17 +20,13 @@ const SidePanel = () => {
         type: 'saveSidePanelBookmark',
         payload: values,
       },
-      response => {
-        if (response.status === 'success') {
-          // 当成功时，弹出 成功提示，关闭 popup
-          chrome.notifications.create({
-            type: 'basic',
-            iconUrl: '/icon-128.png',
-            title: '保存成功',
-            message: '书签保存成功',
-          });
+      async response => {
+        if (response?.status === 'success') {
+          messageApi.success('保存成功');
+          await chrome.runtime.sendMessage({ type: 'closePanel' });
         } else {
-          console.error('Failed to save bookmark');
+          message.error('保存失败');
+          console.log('saveBookmark error -> response', response);
         }
       },
     );
@@ -107,6 +103,7 @@ const SidePanel = () => {
             },
           },
         }}>
+        {contextHolder}
         <Form form={form} preserve={false} layout="vertical">
           <Form.Item rules={[{ required: true }]} label="文件夹选项" name="dirType" initialValue={DirTypeEnum.Exist}>
             <Radio.Group
