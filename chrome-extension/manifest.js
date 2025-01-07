@@ -47,7 +47,7 @@ const manifest = withSidePanel({
     type: 'module',
   },
   action: {
-    default_popup: 'popup/index.html',
+    // default_popup: 'popup/index.html', // NOTE: 注释这里，配合 chrome.action.onClicked.addListener & chrome.sidePanel.open 可以打开侧边栏
     default_icon: 'icon-34.png',
   },
   // chrome_url_overrides: {

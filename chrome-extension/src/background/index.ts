@@ -73,10 +73,9 @@ chrome.runtime.onMessage.addListener(async (message, sender, sendResponse) => {
   }
 });
 
-chrome.action.onClicked.addListener(() => {
-  console.log('xxxxxxxxxxxxxxxxxxxxxxxxxx');
+chrome.action.onClicked.addListener(async tab => {
   // 我想打开 sidePanel 默认配置，应该如何配置参数
-  chrome.sidePanel.open({
-    tabId: chrome.devtools.inspectedWindow.tabId,
+  await chrome.sidePanel.open({
+    tabId: tab.id as number,
   });
 });
