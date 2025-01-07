@@ -1,6 +1,6 @@
 import { PriorityEnum, type EditBookmark } from '@extension/types';
 import { BOOKMARK_CUSTOM_SPLIT } from '@extension/constants';
-
+import { filter } from 'ramda';
 // 链接：https://juejin.cn/post/7184359234060943421
 export function buildShortUUID() {
   let unique = 0;
@@ -45,7 +45,8 @@ export const setCustomTitle = (params: CustomTitle): string => {
     return title;
   }
 
-  const searchParams = new URLSearchParams({ description, aiSummary, priority: String(priority) });
+  const filterPayload = filter(v => v != null)({ description, aiSummary, priority: String(priority) });
+  const searchParams = new URLSearchParams(filterPayload as Record<string, any>);
   return `${title}${BOOKMARK_CUSTOM_SPLIT}?${searchParams.toString()}`;
 };
 

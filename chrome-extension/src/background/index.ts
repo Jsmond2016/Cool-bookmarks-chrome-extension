@@ -1,9 +1,8 @@
 import 'webextension-polyfill';
 import { exampleThemeStorage } from '@extension/storage';
-import { BOOKMARK_CUSTOM_SPLIT } from '@extension/constants';
 import * as Apis from '@extension/service';
 import type { EditBookmark } from '@extension/types';
-import { getCustomTitle, setCustomTitle } from '@extension/utils';
+import { setCustomTitle } from '@extension/utils';
 
 exampleThemeStorage.get().then(theme => {
   console.log('theme', theme);

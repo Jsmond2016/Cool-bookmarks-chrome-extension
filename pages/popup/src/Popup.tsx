@@ -4,10 +4,10 @@ import { Button, Card, ConfigProvider, Form, Input, Radio, Row, Select } from 'a
 import { ApiSelect } from '@extension/components';
 import * as Apis from '@extension/service';
 import { to } from 'await-to-js';
-import { BOOKMARK_CUSTOM_SPLIT } from '@extension/constants';
 import type { EditBookmark } from '@extension/types';
 import { DirTypeEnum, DirTypeOptions, PriorityEnum, PriorityOptions } from '@extension/types';
 import { toPairs } from 'ramda';
+import { getCustomTitle } from '@extension/utils';
 const Popup = () => {
   const [form] = Form.useForm();
 
@@ -58,14 +58,13 @@ const Popup = () => {
         if (isExist) {
           // 存在-则解析 url，title，description
 
-          const { id, title, url, parentId } = bookmarks[0];
-          const [sourceTitle, customDescription] = title.split(BOOKMARK_CUSTOM_SPLIT);
+          const { id, parentId, url, title } = bookmarks[0];
+          const formFields = getCustomTitle(title);
           form.setFieldsValue({
             id,
             parentId,
-            title: sourceTitle,
             url,
-            customDescription,
+            ...formFields,
           });
           return;
         }

@@ -1,7 +1,7 @@
 import { useRef, useState } from 'react';
 import { Modal, List, Input, Form, message, Space, Button, Row, Col } from 'antd';
 import * as api from '@extension/service';
-import { buildShortUUID } from '@extension/utils';
+import { buildShortUUID, getCustomTitle } from '@extension/utils';
 import type { IBookMark } from '@extension/types';
 import { DndContext, PointerSensor, closestCenter, useSensor, useSensors, KeyboardSensor } from '@dnd-kit/core';
 import {
@@ -182,9 +182,10 @@ const useSectionModal = () => {
 
   const onCopyAll = async () => {
     const text = list
-      .map(({ title, url }) => {
-        const [sourceTitle, desc] = getTitleTuple(title);
-        return `- [${sourceTitle}](${url}): ${desc}`;
+      .map(({ title: sourceTitle, url }) => {
+        const { title, aiSummary, description } = getCustomTitle(sourceTitle);
+        const desc = description ? `个人读后感：**${description}**` : '';
+        return `- [${title}](${url}): ${aiSummary} ${desc}`;
       })
       .join('\n');
     // refer: https://stackoverflow.com/questions/400212/how-do-i-copy-to-the-clipboard-in-javascript

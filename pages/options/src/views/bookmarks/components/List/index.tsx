@@ -31,8 +31,10 @@ const List = (props: IProps) => {
   }, []);
 
   const copyBookmark = async (record: IBookMark) => {
-    const { url, title } = record;
-    const text = `- [${title}](${url})`;
+    const { url, title: sourceTitle } = record;
+    const { title, aiSummary, description } = getCustomTitle(sourceTitle);
+    const desc = description ? `个人读后感：**${description}**` : '';
+    const text = `- [${title}](${url}): ${aiSummary} ${desc}`;
     // refer: https://stackoverflow.com/questions/400212/how-do-i-copy-to-the-clipboard-in-javascript
     // https://developer.mozilla.org/en-US/docs/Web/API/Clipboard/writeText
     const res = await navigator.clipboard.writeText(text);

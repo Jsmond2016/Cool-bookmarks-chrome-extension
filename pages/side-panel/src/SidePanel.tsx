@@ -57,17 +57,13 @@ const SidePanel = () => {
         // 更新书签
         const { isExist, bookmarks } = await Apis.isExistBookmark(tab.url as string);
         if (isExist) {
-          // 存在-则解析 url，title，description
-
-          const { id, url, parentId } = bookmarks[0];
-          // const [sourceTitle, description] = title.split(BOOKMARK_CUSTOM_SPLIT);
-          const { title, description } = getCustomTitle(bookmarks[0].title);
+          const { id, url, parentId, title } = bookmarks[0];
+          const formFields = getCustomTitle(title);
           form.setFieldsValue({
             id,
-            parentId,
-            title,
             url,
-            description,
+            parentId,
+            ...formFields,
           });
           return;
         }

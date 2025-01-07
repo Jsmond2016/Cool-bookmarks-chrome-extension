@@ -26,6 +26,7 @@
     "@extension/shared": "workspace:*",
     "@extension/storage": "workspace:*",
     "@extension/types": "workspace:*",
+    "@extension/utils": "workspace:*",
     "antd": "^5.22.7",
     "await-to-js": "^3.0.0",
     "ramda": "^0.30.1"
