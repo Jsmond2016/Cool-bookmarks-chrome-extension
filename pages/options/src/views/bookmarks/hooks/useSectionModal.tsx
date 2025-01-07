@@ -1,8 +1,8 @@
 import { useRef, useState } from 'react';
 import { Modal, List, Input, Form, message, Space, Button, Row, Col } from 'antd';
 import * as api from '@extension/service';
-import { buildShortUUID, getCustomTitle } from '@extension/utils';
-import type { IBookMark } from '@extension/types';
+import { buildShortUUID } from '@extension/utils';
+import type { EditBookmark } from '@extension/types';
 import { DndContext, PointerSensor, closestCenter, useSensor, useSensors, KeyboardSensor } from '@dnd-kit/core';
 import {
   SortableContext,
@@ -13,25 +13,10 @@ import {
 } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { DragOutlined, MinusCircleOutlined } from '@ant-design/icons';
-import { BOOKMARK_CUSTOM_SPLIT } from '@extension/constants';
-
-type Item = {
-  dateAdded: number;
-  id: string;
-  index: number;
-  parentId: string;
-  title: string;
-  url: string;
-  source: string;
-  description: string;
-  date: string;
-  bookmarkName: string;
-  dateLastUsed?: number;
-};
 
 type SortTableItemProps = {
-  item: Item;
-  removeItem: (item: Item) => void;
+  item: EditBookmark;
+  removeItem: (item: EditBookmark) => void;
 };
 
 function SortableItem(props: SortTableItemProps) {
@@ -59,7 +44,7 @@ function SortableItem(props: SortTableItemProps) {
           <DragOutlined ref={setActivatorNodeRef} {...listeners} style={iconStyles} />
         </Col>
         <Col flex="auto">
-          <a href={item.url}>{getTitleTuple(item.bookmarkName)[0]}</a>
+          <a href={item.url}>{item.title}</a>
         </Col>
         <Col flex="20px">
           <MinusCircleOutlined
@@ -75,15 +60,15 @@ function SortableItem(props: SortTableItemProps) {
 }
 
 type DefaultListProps = {
-  list: Item[];
-  renderItem: (item: Item, index: number) => React.ReactNode;
+  list: EditBookmark[];
+  renderItem: (item: EditBookmark, index: number) => React.ReactNode;
 };
 const DefaultList = ({ list, renderItem }: DefaultListProps) => (
   <List style={{ maxHeight: '460px', overflowY: 'scroll' }} bordered dataSource={list} renderItem={renderItem}></List>
 );
-const getTitleTuple = (title): [string, string] => {
-  return title.split(BOOKMARK_CUSTOM_SPLIT);
-};
+// const getTitleTuple = (title): [string, string] => {
+//   return title.split(BOOKMARK_CUSTOM_SPLIT);
+// };
 
 /**
  * 拖拽列表功能
@@ -106,7 +91,7 @@ function DndList({ items, setItems }: any) {
   const handleDragEnd = event => {
     const { active, over } = event;
     if (active.id !== over.id) {
-      setItems((items: Item[]) => {
+      setItems((items: EditBookmark[]) => {
         const oldIndex = items.map(v => v.id).indexOf(active.id);
         const newIndex = items.map(v => v.id).indexOf(over.id);
         return arrayMove(items, oldIndex, newIndex);
@@ -124,7 +109,7 @@ function DndList({ items, setItems }: any) {
       <SortableContext items={items.map(v => v.id)} strategy={verticalListSortingStrategy}>
         <DefaultList
           list={items}
-          renderItem={(item: Item) => <SortableItem removeItem={removeItem} key={item.id} item={item} />}
+          renderItem={(item: EditBookmark) => <SortableItem removeItem={removeItem} key={item.id} item={item} />}
         />
       </SortableContext>
     </DndContext>
@@ -135,10 +120,10 @@ const DefaultPreveiwList = ({ list }: any) => {
   return (
     <DefaultList
       list={list}
-      renderItem={(item: Item) => (
+      renderItem={(item: EditBookmark) => (
         <List.Item>
           <Row justify="space-between">
-            <a href={item.url}>{getTitleTuple(item.bookmarkName)[0]}</a>
+            <a href={item.url}>{item.title}</a>
             <MinusCircleOutlined style={{ fontSize: '16px', color: '#08c' }} />
           </Row>
         </List.Item>
@@ -154,7 +139,7 @@ export enum ModeEnum {
 
 const useSectionModal = () => {
   const [visible, setVisible] = useState(false);
-  const [list, setList] = useState<IBookMark[]>([]);
+  const [list, setList] = useState<EditBookmark[]>([]);
   const [mode, setMode] = useState(ModeEnum.EDIT);
   const [form] = Form.useForm();
   const onSuccessCBRef = useRef<(() => void) | null>(null);
@@ -173,7 +158,7 @@ const useSectionModal = () => {
     setVisible(false);
   };
 
-  const openModalAndSetValues = (list: IBookMark[], _mode: ModeEnum, cb) => {
+  const openModalAndSetValues = (list: EditBookmark[], _mode: ModeEnum, cb) => {
     setList(list);
     setMode(_mode);
     setVisible(true);
@@ -182,8 +167,8 @@ const useSectionModal = () => {
 
   const onCopyAll = async () => {
     const text = list
-      .map(({ title: sourceTitle, url }) => {
-        const { title, aiSummary, description } = getCustomTitle(sourceTitle);
+      .map(item => {
+        const { title, aiSummary, url, description } = item;
         const desc = description ? `个人读后感：**${description}**` : '';
         return `- [${title}](${url}): ${aiSummary} ${desc}`;
       })

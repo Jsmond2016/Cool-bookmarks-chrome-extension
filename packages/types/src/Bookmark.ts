@@ -19,11 +19,11 @@ export type IBookmarkParam = {
 
 export interface IBookMark {
   dateAdded: number;
-  description: string;
-  id: string;
   index: number;
-  parentId: string;
   source: string;
+
+  id: string;
+  parentId: string;
   title: string;
   url: string;
 }
@@ -54,7 +54,7 @@ export const PriorityOptions = {
   [PriorityEnum.Lower]: '较低',
 } as const;
 
-export interface EditBookmark {
+export interface EditBookmark extends IBookMark {
   dirType: DirTypeEnum;
   parentId: string;
   newDir?: string;
@@ -62,7 +62,7 @@ export interface EditBookmark {
   priority: PriorityEnum;
   aiSummary: string;
 
-  id: string;
-  title: string;
-  url: string;
+  // id: string;
+  // title: string;
+  // url: string;
 }

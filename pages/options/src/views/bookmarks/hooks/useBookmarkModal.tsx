@@ -1,8 +1,9 @@
 import { useRef, useState } from 'react';
 import { Modal, Input, Form, message, Select } from 'antd';
 import * as api from '@extension/service';
-import { getCustomTitle, setCustomTitle, sourceMap } from '@extension/utils';
-import { PriorityEnum, PriorityOptions, type IBookMark } from '@extension/types';
+import { setCustomTitle, sourceMap } from '@extension/utils';
+import type { EditBookmark } from '@extension/types';
+import { PriorityEnum, PriorityOptions } from '@extension/types';
 import { ApiSelect } from '@extension/components';
 import { toPairs } from 'ramda';
 
@@ -10,7 +11,7 @@ const useEditBookmarkModal = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [form] = Form.useForm();
 
-  const setFormFields = (defaultValues: IBookMark) => {
+  const setFormFields = (defaultValues: EditBookmark) => {
     const { parentId, ...rest } = defaultValues;
     form.setFieldsValue({
       ...rest,
@@ -20,9 +21,9 @@ const useEditBookmarkModal = () => {
 
   const onSuccessCBRef = useRef<(() => void) | null>(null);
 
-  const openModalAndSetValues = (values: IBookMark, cb: () => void) => {
+  const openModalAndSetValues = (values: EditBookmark, cb: () => void) => {
     setModalVisible(true);
-    const { title, description, aiSummary } = getCustomTitle(values.title);
+    const { title, description, aiSummary } = values;
     const formValues = {
       ...values,
       title,

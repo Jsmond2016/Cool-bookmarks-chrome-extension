@@ -1,18 +1,18 @@
 import type { ColumnsType, TableProps } from 'antd/es/table';
-import type { IBookMark } from '../..';
 import { useEffect, useState } from 'react';
 import Table from 'antd/es/table';
 import type { PaginationProps } from 'antd';
 import { Button, Modal, Space, message, Typography, Tooltip } from 'antd';
 import { getGroupList, removeBookmark } from '@extension/service';
-import { getCustomTitle } from '@extension/utils';
+import type { EditBookmark } from '@extension/types';
+import { PriorityOptions } from '@extension/types';
 
 const { Paragraph, Link } = Typography;
 
 export type IProps = {
-  list: IBookMark[];
-  editBookmark: (record: IBookMark) => void;
-  rowSelection: TableProps<IBookMark>['rowSelection'];
+  list: EditBookmark[];
+  editBookmark: (record: EditBookmark) => void;
+  rowSelection: TableProps<EditBookmark>['rowSelection'];
   refreshList: () => void;
   current: number;
   pageSize: number;
@@ -30,9 +30,8 @@ const List = (props: IProps) => {
     });
   }, []);
 
-  const copyBookmark = async (record: IBookMark) => {
-    const { url, title: sourceTitle } = record;
-    const { title, aiSummary, description } = getCustomTitle(sourceTitle);
+  const copyBookmark = async (record: EditBookmark) => {
+    const { url, title, aiSummary, description } = record;
     const desc = description ? `个人读后感：**${description}**` : '';
     const text = `- [${title}](${url}): ${aiSummary} ${desc}`;
     // refer: https://stackoverflow.com/questions/400212/how-do-i-copy-to-the-clipboard-in-javascript
@@ -42,7 +41,7 @@ const List = (props: IProps) => {
     message.success('复制成功!');
   };
 
-  const deleteBookmark = async (record: IBookMark) => {
+  const deleteBookmark = async (record: EditBookmark) => {
     Modal.confirm({
       title: '确定删除吗？',
       onOk: async () => {
@@ -58,35 +57,38 @@ const List = (props: IProps) => {
   };
 
   // 书签名/链接/文章名/来源/自定义描述/
-  const columns: ColumnsType<IBookMark> = [
+  const columns: ColumnsType<EditBookmark> = [
     {
       title: '书签名',
       dataIndex: 'title',
       width: 360,
       render: (v, record) => {
-        const { description, title } = getCustomTitle(record.title);
         return (
-          <Tooltip title={description}>
+          <Tooltip title={record.description}>
             <Paragraph ellipsis style={{ width: '360px' }}>
-              <Link href={record.url}>{title}</Link>
+              <Link href={record.url}>{v}</Link>
             </Paragraph>
           </Tooltip>
         );
       },
     },
     {
+      title: '优先级',
+      dataIndex: 'priority',
+      width: 80,
+      render: v => PriorityOptions[v],
+    },
+    {
       title: 'AI总结',
       dataIndex: 'aiSummary',
       width: 360,
-      render: (v, record) => <Paragraph style={{ width: '360px' }}>{getCustomTitle(record.title).aiSummary}</Paragraph>,
+      render: v => <Paragraph style={{ width: '360px' }}>{v}</Paragraph>,
     },
     {
-      title: '描述',
+      title: '个人描述或总结',
       dataIndex: 'description',
       width: 360,
-      render: (v, record) => (
-        <Paragraph style={{ width: '360px' }}>{getCustomTitle(record.title).description}</Paragraph>
-      ),
+      render: v => <Paragraph style={{ width: '360px' }}>{v}</Paragraph>,
     },
     {
       title: '收藏时间',
@@ -104,11 +106,6 @@ const List = (props: IProps) => {
       width: 120,
       render: (v, record) => groupListMap.get(record.parentId),
     },
-    // {
-    //   title: "自定义描述",
-    //   dataIndex: "description",
-    //   width: 120,
-    // },
     {
       title: '操作',
       dataIndex: 'operation',
@@ -145,7 +142,7 @@ const List = (props: IProps) => {
   console.log('list 1111 ==>>> ', list);
 
   return (
-    <Table<IBookMark>
+    <Table<EditBookmark>
       rowKey="id"
       rowSelection={{
         type: 'checkbox',

@@ -8,22 +8,12 @@ import useEditBookmarkModal from './hooks/useBookmarkModal';
 import useSectionModal, { ModeEnum } from './hooks/useSectionModal';
 import List from './components/List/index';
 import useBatchEditMarkModal from './hooks/useBatchEditMarkModal';
-
-export interface IBookMark {
-  dateAdded: number;
-  description: string;
-  id: string;
-  index: number;
-  parentId: string;
-  source: string;
-  title: string;
-  url: string;
-}
+import type { EditBookmark } from '@extension/types';
 
 const useSelectedRow = () => {
-  const [selectedRows, setSelectedRows] = useState<IBookMark[]>([]);
+  const [selectedRows, setSelectedRows] = useState<EditBookmark[]>([]);
   const rowSelection = {
-    onChange: (selectedRowKeys: React.Key[], selectedRows: IBookMark[]) => {
+    onChange: (selectedRowKeys: React.Key[], selectedRows: EditBookmark[]) => {
       setSelectedRows(selectedRows);
     },
     selectedRowKeys: selectedRows.map(v => v.id),

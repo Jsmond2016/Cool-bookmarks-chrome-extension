@@ -1,13 +1,12 @@
 import dayjs from 'dayjs';
 import isBetween from 'dayjs/plugin/isBetween';
-import { getStorage, setStorage, sourceRender } from '@extension/utils';
+import { getCustomTitle, getStorage, setStorage, sourceRender } from '@extension/utils';
 import type { IBookMark, IBookmarkParam } from '@extension/types';
 
 dayjs.extend(isBetween);
 
 const customAttributes = {
   source: '',
-  description: '',
   date: '',
 };
 const addCustomAttributes = list =>
@@ -15,8 +14,9 @@ const addCustomAttributes = list =>
     ...item,
     ...customAttributes,
     date: new Date(item.dateAdded).toLocaleDateString(),
-    bookmarkName: item.title,
+    sourceTitle: item.title,
     source: sourceRender(item.url),
+    ...getCustomTitle(item.title),
   }));
 
 /**
