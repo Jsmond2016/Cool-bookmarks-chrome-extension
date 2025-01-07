@@ -262,7 +262,11 @@ importers:
 
   packages/tsconfig: {}
 
-  packages/types: {}
+  packages/types:
+    dependencies:
+      '@extension/constants':
+        specifier: workspace:*
+        version: link:../constants
 
   packages/ui:
     dependencies:

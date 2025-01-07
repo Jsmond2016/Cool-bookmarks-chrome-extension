@@ -12,6 +12,7 @@
   },
   "devDependencies": {
     "@extension/types": "workspace:*",
+    "@extension/constants": "workspace:*",
     "@types/ramda": "^0.30.2"
   },
   "keywords": [],

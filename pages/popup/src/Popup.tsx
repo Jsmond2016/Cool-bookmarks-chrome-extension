@@ -5,7 +5,7 @@ import { ApiSelect } from '@extension/components';
 import * as Apis from '@extension/service';
 import { to } from 'await-to-js';
 import type { EditBookmark } from '@extension/types';
-import { DirTypeEnum, DirTypeOptions, PriorityEnum, PriorityOptions } from '@extension/types';
+import { DirTypeEnum, DirTypeOptions, PriorityEnum, PriorityOptions } from '@extension/constants';
 import { toPairs } from 'ramda';
 import { getCustomTitle } from '@extension/utils';
 const Popup = () => {

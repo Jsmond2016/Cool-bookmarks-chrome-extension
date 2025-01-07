@@ -5,7 +5,7 @@ import type { PaginationProps } from 'antd';
 import { Button, Modal, Space, message, Typography, Tooltip } from 'antd';
 import { getGroupList, removeBookmark } from '@extension/service';
 import type { EditBookmark } from '@extension/types';
-import { PriorityOptions } from '@extension/types';
+import { PriorityOptions } from '@extension/constants';
 
 const { Paragraph, Link } = Typography;
 

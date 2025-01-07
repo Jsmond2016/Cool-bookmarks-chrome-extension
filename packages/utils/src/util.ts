@@ -1,5 +1,7 @@
-import { PriorityEnum, type EditBookmark } from '@extension/types';
+import { type EditBookmark } from '@extension/types';
+
 import { BOOKMARK_CUSTOM_SPLIT } from '@extension/constants';
+import { PriorityEnum } from '@extension/constants';
 import { filter } from 'ramda';
 // 链接：https://juejin.cn/post/7184359234060943421
 export function buildShortUUID() {

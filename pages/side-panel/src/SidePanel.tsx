@@ -7,7 +7,7 @@ import * as Apis from '@extension/service';
 import { to } from 'await-to-js';
 import { toPairs } from 'ramda';
 import type { EditBookmark } from '@extension/types';
-import { DirTypeEnum, DirTypeOptions, PriorityEnum, PriorityOptions } from '@extension/types';
+import { DirTypeEnum, DirTypeOptions, PriorityEnum, PriorityOptions } from '@extension/constants';
 import { getCustomTitle } from '@extension/utils';
 
 const SidePanel = () => {

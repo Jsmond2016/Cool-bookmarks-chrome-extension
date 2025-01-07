@@ -3,7 +3,7 @@ import { Modal, Input, Form, message, Select } from 'antd';
 import * as api from '@extension/service';
 import { setCustomTitle, sourceMap } from '@extension/utils';
 import type { EditBookmark } from '@extension/types';
-import { PriorityEnum, PriorityOptions } from '@extension/types';
+import { PriorityEnum, PriorityOptions } from '@extension/constants';
 import { ApiSelect } from '@extension/components';
 import { toPairs } from 'ramda';
 
