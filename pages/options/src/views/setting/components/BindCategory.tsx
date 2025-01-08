@@ -4,36 +4,28 @@ import { Input, Select, Space } from 'antd';
 type ISelectManyProps = {
   value?: any;
   onChange?: any;
-  firstCategoryOptions: string[];
-  secondCategoryOptions: string[];
+  firstCategoryOptions: Record<'label' | 'value', string>[];
+  secondCategoryOptions: Record<'label' | 'value', string>[];
 };
 
 const BindCategory = (props: ISelectManyProps) => {
   const { firstCategoryOptions, secondCategoryOptions, ...restProps } = props;
 
-  const [valList, setValList] = useControllableValue(restProps, {
-    defaultValue: [
-      {
-        firstCategory: '',
-        secondCategories: [],
-      },
-    ],
+  const [value, setValue] = useControllableValue(restProps, {
+    defaultValue: [],
   });
 
-  const onSecondChange = value => {
-    // setVal([...val, value]);
-  };
-
   return (
-    <Space direction="vertical" style={{ width: 340 }}>
+    <Space direction="vertical" style={{ width: 420 }}>
       {firstCategoryOptions.map((v, idx) => (
         <Space wrap key={idx}>
-          <Input disabled style={{ width: 160 }} value={v} />
+          <Input disabled style={{ width: 200 }} value={v.label} />
           <Select
             style={{ width: 160 }}
             mode="multiple"
-            options={secondCategoryOptions.map(v => ({ label: v, value: v }))}
-            onChange={onSecondChange}
+            value={value}
+            options={secondCategoryOptions.map(v => ({ value: v.value, label: v.value }))}
+            onChange={setValue}
             placeholder="请选择二级分类"
           />
         </Space>

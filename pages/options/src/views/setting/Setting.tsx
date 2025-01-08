@@ -1,4 +1,4 @@
-import { Button, Form, Layout } from 'antd';
+import { Button, Col, Form, Layout, Row } from 'antd';
 import React from 'react';
 
 import { FormItem } from '@extension/components';
@@ -17,28 +17,41 @@ const Setting = () => {
   return (
     <Layout.Content>
       <Form form={form}>
-        <FormItem name="firstCategory" label="一级分类" initialValue={[{ name: '', label: '' }]}>
-          <CategoryInput />
-        </FormItem>
-        <FormItem name="secondCategory" label="二级分类" initialValue={[{ name: '', label: '' }]}>
-          <CategoryInput />
-        </FormItem>
-        <Form.Item noStyle>
-          {({ getFieldValue }) => (
-            <FormItem name="bindCategory">
-              <BindCategory
-                firstCategoryOptions={getFieldValue('firstCategory') || []}
-                secondCategoryOptions={(getFieldValue('secondCategory') || []).map(v => ({
-                  label: v.name,
-                  value: v.name,
-                }))}
-              />
+        <Row>
+          <Col push={4} span={12}>
+            <FormItem name="firstCategory" label="一级分类" initialValue={[{ value: '', label: '' }]}>
+              <CategoryInput />
             </FormItem>
-          )}
-        </Form.Item>
-        <Button type="primary" onClick={handleSave}>
-          提交
-        </Button>
+            <FormItem name="secondCategory" label="二级分类" initialValue={[{ value: '', label: '' }]}>
+              <CategoryInput />
+            </FormItem>
+            <Form.Item
+              noStyle
+              shouldUpdate={(pre, cur) =>
+                pre.firstCategory !== cur.firstCategory || pre.secondCategory !== cur.secondCategory
+              }>
+              {({ getFieldValue }) => {
+                const firstCategoryOptions = getFieldValue('firstCategory') || [];
+                const secondCategoryOptions = getFieldValue('secondCategory') || [];
+                return (
+                  <FormItem name="bindCategory">
+                    <BindCategory
+                      firstCategoryOptions={firstCategoryOptions}
+                      secondCategoryOptions={secondCategoryOptions}
+                    />
+                  </FormItem>
+                );
+              }}
+            </Form.Item>
+          </Col>
+        </Row>
+        <Row>
+          <Col push={4}>
+            <Button type="primary" onClick={handleSave}>
+              提交
+            </Button>
+          </Col>
+        </Row>
       </Form>
     </Layout.Content>
   );
