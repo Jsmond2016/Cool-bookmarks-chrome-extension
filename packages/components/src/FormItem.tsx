@@ -6,8 +6,8 @@ export const formItemLayout = {
   labelCol: { span: 8 },
   wrapperCol: { span: 16 },
 };
-const FormItem = ({ label, name, children }: Pick<FormItemProps, 'label' | 'name' | 'children'>) => (
-  <Form.Item {...formItemLayout} label={label} name={name}>
+const FormItem = ({ label, name, children, ...restProps }: FormItemProps) => (
+  <Form.Item {...formItemLayout} label={label} name={name} {...restProps}>
     {children}
   </Form.Item>
 );

@@ -24,6 +24,7 @@ function getItem(
 }
 
 const items: MenuItem[] = [
+  getItem('书签设置', '/setting', <PieChartOutlined />),
   getItem('书签管理', '/bookmarks', <PieChartOutlined />),
   getItem('片段管理', '/sections', <DesktopOutlined />),
   getItem('日报管理', '/daily-notes', <ContainerOutlined />),

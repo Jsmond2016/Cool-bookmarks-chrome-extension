@@ -3,6 +3,7 @@ import './layoutContainer.css';
 import { Layout } from 'antd';
 import { Route, Routes, Navigate } from 'react-router';
 import Bookmarks from './views/bookmarks';
+import Setting from './views/setting';
 import Sections from './views/sections';
 import NotFind from './views/not-find';
 
@@ -29,6 +30,7 @@ const LayoutContainer: React.FC = () => {
         <Content style={{ margin: '24px 16px 0', overflow: 'initial' }}>
           <Routes>
             <Route path="/" element={<Navigate replace to="bookmarks" />}></Route>
+            <Route path="/setting" element={<Setting />}></Route>
             <Route path="bookmarks" element={<Bookmarks />}></Route>
             <Route path="sections" element={<Sections />}></Route>
             <Route path="*" element={<NotFind />}></Route>
