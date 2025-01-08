@@ -170,7 +170,7 @@ const useSectionModal = () => {
       .map(item => {
         const { title, aiSummary, url, description } = item;
         const desc = description ? `个人读后感：**${description}**` : '';
-        return `- [${title}](${url}): ${aiSummary} ${desc}`;
+        return `- [${title}](${url}) ${aiSummary ?? ''} ${desc}`;
       })
       .join('\n');
     // refer: https://stackoverflow.com/questions/400212/how-do-i-copy-to-the-clipboard-in-javascript
@@ -198,6 +198,7 @@ const useSectionModal = () => {
       onCancel={() => setVisible(false)}
       maskClosable={false}
       destroyOnClose
+      width={800}
       footer={<Footer />}>
       <Form form={form} preserve={false}>
         {mode === ModeEnum.EDIT && (
