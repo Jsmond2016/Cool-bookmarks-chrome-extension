@@ -13,6 +13,14 @@ import {
 } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { DragOutlined, MinusCircleOutlined } from '@ant-design/icons';
+import { groupBy, keys, prop } from 'ramda';
+import {
+  CategoryDescOptions,
+  DayFirstCategoryOptions,
+  DayFirstCategoryOrder,
+  DaySecondCategoryOptions,
+  DaySecondCategoryOrder,
+} from '@extension/constants';
 
 type SortTableItemProps = {
   item: EditBookmark;
@@ -165,14 +173,68 @@ const useSectionModal = () => {
     onSuccessCBRef.current = cb;
   };
 
-  const onCopyAll = async () => {
-    const text = list
+  const getBookmarkContent = (list: EditBookmark[] = []) => {
+    return list
       .map(item => {
         const { title, aiSummary, url, description } = item;
         const desc = description ? `个人读后感：**${description}**` : '';
         return `- [${title}](${url}) ${aiSummary ?? ''} ${desc}`;
       })
       .join('\n');
+  };
+
+  const getSecondContent = (list: EditBookmark[] = []) => {
+    const secondCategoryList = groupBy(prop('secondCategory'), list);
+    return DaySecondCategoryOrder.filter(v => keys(secondCategoryList).includes(v))
+      .map(secondCategory => {
+        const bookmarkList = secondCategoryList[secondCategory] as EditBookmark[];
+        const desc = CategoryDescOptions[secondCategory] ? `> ${CategoryDescOptions[secondCategory]}` : '';
+
+        return `
+## ${DaySecondCategoryOptions[secondCategory]}
+${desc}
+
+${getBookmarkContent(bookmarkList as EditBookmark[])}
+`;
+      })
+      .join('\n');
+  };
+
+  /**
+   * 
+   * @param list 
+   * @returns
+   ```
+   ## firstCategory
+   > description
+
+   ### secondCategory
+   > description
+
+   - [title](url) { aiSummary } {description}
+
+   
+   ```
+   
+  */
+  const transformCopyContent = (list: EditBookmark[]) => {
+    const firstCategoryList = groupBy(prop('firstCategory'), list);
+    return DayFirstCategoryOrder.filter(v => keys(firstCategoryList).includes(v))
+      .map(firstCategory => {
+        const secondCategoryList = firstCategoryList[firstCategory];
+        const firstDesc = CategoryDescOptions[firstCategory] ? `> ${CategoryDescOptions[firstCategory]}` : '';
+        return `
+## ${DayFirstCategoryOptions[firstCategory]}
+${firstDesc}
+
+${getSecondContent(secondCategoryList as EditBookmark[])}
+`;
+      })
+      .join('\n');
+  };
+
+  const onCopyAll = async () => {
+    const text = transformCopyContent(list);
     // refer: https://stackoverflow.com/questions/400212/how-do-i-copy-to-the-clipboard-in-javascript
     // https://developer.mozilla.org/en-US/docs/Web/API/Clipboard/writeText
     const res = await navigator.clipboard.writeText(text);

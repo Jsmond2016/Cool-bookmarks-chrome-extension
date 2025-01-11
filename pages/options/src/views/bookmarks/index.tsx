@@ -98,8 +98,7 @@ const Bookmarks: React.FC = () => {
 
   const batchEdit = async () => {
     // selectedRows
-    const ids = selectedRows.map(item => item.id) as string[];
-    editBatchEditModal(ids, () => {
+    editBatchEditModal(selectedRows, () => {
       refreshList();
       resetSelectedRows();
     });

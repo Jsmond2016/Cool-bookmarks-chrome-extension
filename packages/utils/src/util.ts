@@ -1,7 +1,6 @@
-import { type EditBookmark } from '@extension/types';
+import type { BookmarkParams } from '@extension/types';
 
-import { BOOKMARK_CUSTOM_SPLIT } from '@extension/constants';
-import { PriorityEnum } from '@extension/constants';
+import { BOOKMARK_CUSTOM_SPLIT, PriorityEnum } from '@extension/constants';
 import { filter } from 'ramda';
 // 链接：https://juejin.cn/post/7184359234060943421
 export function buildShortUUID() {
@@ -38,16 +37,22 @@ export const sourceRender = (url: string) => {
   }
 };
 
-type CustomTitle = Pick<EditBookmark, 'aiSummary' | 'priority' | 'title' | 'description'>;
+type CustomTitle = BookmarkParams;
 export const setCustomTitle = (params: CustomTitle): string => {
-  const { title, description, aiSummary, priority } = params;
+  const { title, description, aiSummary, priority, firstCategory, secondCategory } = params;
 
   // 没有设置自定义选项，则只保存标题
   if ([description, aiSummary, priority].every(v => !v)) {
     return title;
   }
 
-  const filterPayload = filter(v => v != null)({ description, aiSummary, priority: String(priority) });
+  const filterPayload = filter(v => v != null)({
+    description,
+    aiSummary,
+    priority: String(priority),
+    firstCategory,
+    secondCategory,
+  });
   const searchParams = new URLSearchParams(filterPayload as Record<string, any>);
   return `${title}${BOOKMARK_CUSTOM_SPLIT}?${searchParams.toString()}`;
 };
@@ -61,6 +66,8 @@ export const getCustomTitle = (sourceTitle: string): CustomTitle => {
       description: '',
       aiSummary: '',
       priority: PriorityEnum.Medium,
+      firstCategory: '',
+      secondCategory: '',
     };
   }
 

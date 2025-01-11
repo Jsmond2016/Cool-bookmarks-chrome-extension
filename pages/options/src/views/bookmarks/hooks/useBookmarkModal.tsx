@@ -3,7 +3,14 @@ import { Modal, Input, Form, message, Select } from 'antd';
 import * as api from '@extension/service';
 import { setCustomTitle, sourceMap } from '@extension/utils';
 import type { EditBookmark } from '@extension/types';
-import { PriorityEnum, PriorityOptions } from '@extension/constants';
+import type { DayFirstCategoryEnum, DaySecondCategoryEnum } from '@extension/constants';
+import {
+  DayFirstCategoryOptions,
+  DaySecondCategoryOptions,
+  FirstBindSecondCategoryRelation,
+  PriorityEnum,
+  PriorityOptions,
+} from '@extension/constants';
 import { ApiSelect } from '@extension/components';
 import { toPairs } from 'ramda';
 
@@ -23,12 +30,14 @@ const useEditBookmarkModal = () => {
 
   const openModalAndSetValues = (values: EditBookmark, cb: () => void) => {
     setModalVisible(true);
-    const { title, description, aiSummary } = values;
+    const { title, description, aiSummary, firstCategory, secondCategory } = values;
     const formValues = {
       ...values,
       title,
       description,
       aiSummary,
+      secondCategory,
+      firstCategory,
     };
     setFormFields(formValues);
     onSuccessCBRef.current = cb;
@@ -84,6 +93,27 @@ const useEditBookmarkModal = () => {
               .toSorted((a, b) => b[0] - a[0])
               .map(([key, label]) => ({ value: +key, label }))}
           />
+        </Form.Item>
+        <Form.Item rules={[{ required: true }]} name="firstCategory" label="一级分类">
+          <Select
+            onChange={() => form.setFieldValue('secondCategory', undefined)}
+            options={toPairs(DayFirstCategoryOptions).map(([key, label]) => ({ value: key, label }))}
+          />
+        </Form.Item>
+        <Form.Item noStyle shouldUpdate={(pre, cur) => pre.firstCategory !== cur.firstCategory}>
+          {({ getFieldValue }) => {
+            const firstId = getFieldValue('firstCategory') as DayFirstCategoryEnum;
+            const bindKeyEnums = FirstBindSecondCategoryRelation[firstId] || [];
+            const options = bindKeyEnums.map((key: DaySecondCategoryEnum) => ({
+              value: key,
+              label: DaySecondCategoryOptions[key],
+            }));
+            return (
+              <Form.Item rules={[{ required: true }]} name="secondCategory" label="二级分类">
+                <Select options={options} />
+              </Form.Item>
+            );
+          }}
         </Form.Item>
         <Form.Item name="aiSummary" label="AI总结">
           <Input.TextArea rows={3} />

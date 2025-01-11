@@ -5,7 +5,7 @@ import type { PaginationProps } from 'antd';
 import { Button, Modal, Space, message, Typography, Tooltip } from 'antd';
 import { getGroupList, removeBookmark } from '@extension/service';
 import type { EditBookmark } from '@extension/types';
-import { PriorityOptions } from '@extension/constants';
+import { DayFirstCategoryOptions, DaySecondCategoryOptions, PriorityOptions } from '@extension/constants';
 
 const { Paragraph, Link } = Typography;
 
@@ -77,6 +77,18 @@ const List = (props: IProps) => {
       dataIndex: 'priority',
       width: 80,
       render: v => PriorityOptions[v],
+    },
+    {
+      title: '一级分类',
+      dataIndex: 'firstCategory',
+      width: 80,
+      render: v => DayFirstCategoryOptions[v],
+    },
+    {
+      title: '二级分类',
+      dataIndex: 'secondCategory',
+      width: 80,
+      render: v => DaySecondCategoryOptions[v],
     },
     {
       title: 'AI总结',

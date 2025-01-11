@@ -2,12 +2,21 @@ import '@src/SidePanel.css';
 import { withErrorBoundary, withSuspense } from '@extension/shared';
 import { useEffect } from 'react';
 import { Button, Card, ConfigProvider, Form, Input, Radio, Row, Select, message } from 'antd';
-import { ApiSelect } from '@extension/components';
+import { ApiSelect, FormItem } from '@extension/components';
 import * as Apis from '@extension/service';
 import { to } from 'await-to-js';
 import { toPairs } from 'ramda';
 import type { EditBookmark } from '@extension/types';
-import { DirTypeEnum, DirTypeOptions, PriorityEnum, PriorityOptions } from '@extension/constants';
+import type { DayFirstCategoryEnum, DaySecondCategoryEnum } from '@extension/constants';
+import {
+  DirTypeEnum,
+  DirTypeOptions,
+  PriorityEnum,
+  PriorityOptions,
+  DayFirstCategoryOptions,
+  FirstBindSecondCategoryRelation,
+  DaySecondCategoryOptions,
+} from '@extension/constants';
 import { getCustomTitle } from '@extension/utils';
 
 const SidePanel = () => {
@@ -141,6 +150,27 @@ const SidePanel = () => {
                 .toSorted((a, b) => b[0] - a[0])
                 .map(([key, label]) => ({ value: +key, label }))}
             />
+          </Form.Item>
+          <FormItem rules={[{ required: true }]} name="firstCategory" label="一级分类">
+            <Select
+              onChange={() => form.setFieldValue('secondCategory', undefined)}
+              options={toPairs(DayFirstCategoryOptions).map(([key, label]) => ({ value: key, label }))}
+            />
+          </FormItem>
+          <Form.Item noStyle shouldUpdate={(pre, cur) => pre.firstCategory !== cur.firstCategory}>
+            {({ getFieldValue }) => {
+              const firstId = getFieldValue('firstCategory') as DayFirstCategoryEnum;
+              const bindKeyEnums = FirstBindSecondCategoryRelation[firstId] || [];
+              const options = bindKeyEnums.map((key: DaySecondCategoryEnum) => ({
+                value: key,
+                label: DaySecondCategoryOptions[key],
+              }));
+              return (
+                <Form.Item rules={[{ required: true }]} name="secondCategory" label="二级分类">
+                  <Select options={options} />
+                </Form.Item>
+              );
+            }}
           </Form.Item>
           <Form.Item name="aiSummary" label="AI总结">
             <Input.TextArea rows={3} />

@@ -27,7 +27,16 @@ export interface EditBookmark extends IBookMark {
   dirType: DirTypeEnum;
   parentId: string;
   newDir?: string;
+
   description: string;
   priority: PriorityEnum;
   aiSummary: string;
+
+  firstCategory: string;
+  secondCategory: string;
 }
+
+export type BookmarkParams = Omit<
+  EditBookmark,
+  'source' | 'url' | 'id' | 'parentId' | 'index' | 'dateAdded' | 'dirType' | 'newDir'
+>;

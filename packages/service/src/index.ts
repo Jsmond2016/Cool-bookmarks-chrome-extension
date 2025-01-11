@@ -139,9 +139,10 @@ export const batchRemove = async (records: IBookMark[]) => {
   return res;
 };
 
-export const batchMove = async (sourceIds: string[], destinationId: string) => {
-  const moveFns = sourceIds.map(id => moveBookmark(id, destinationId));
-  const res = await Promise.allSettled(moveFns);
+export const batchMove = async (bookmarks: (IBookmarkParam & { parentId: string })[]) => {
+  const moveFns = bookmarks.map(b => moveBookmark(b.id, b.parentId));
+  const updateFns = bookmarks.map(b => updateBookmark(b));
+  const res = await Promise.allSettled([moveFns, updateFns]);
   return res;
 };
 
