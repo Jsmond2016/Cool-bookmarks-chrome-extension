@@ -71,6 +71,11 @@ let curPanelId: number;
 chrome.action.onClicked.addListener(async tab => {
   // 我想打开 sidePanel 默认配置，应该如何配置参数
   curPanelId = tab.id as number;
+  // http or https
+  const reg = /^(http|https):\/\//;
+  if (!reg.test(tab.url as string)) {
+    return;
+  }
   await chrome.sidePanel.open({
     tabId: tab.id as number,
   });
