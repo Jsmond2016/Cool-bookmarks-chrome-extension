@@ -29,14 +29,27 @@ const useBatchEditMarkModal = () => {
   const updateBookmark = async () => {
     const values = await form.validateFields();
     const { selectedRows, dirId, firstCategory, secondCategory } = values;
-    const newBookmarks = selectedRows.map(bookmark => ({
-      id: bookmark.id,
-      parentId: dirId,
-      changes: {
-        title: setCustomTitle({ ...bookmark, firstCategory, secondCategory }),
-      },
-    }));
-    await api.batchMove(newBookmarks);
+
+    if (!dirId && [firstCategory, secondCategory].every(v => Boolean(!v))) {
+      message.error('请选择要修改的书签');
+      return;
+    }
+
+    if (dirId && [firstCategory, secondCategory].every(v => Boolean(!v))) {
+      await api.moveBookmarks(selectedRows.map(bookmark => ({ id: bookmark.id, destinationId: dirId })));
+      message.success('批量移动成功');
+      return;
+    } else {
+      // 移动 + 修改
+      const newBookmarks = selectedRows.map(bookmark => ({
+        id: bookmark.id,
+        parentId: dirId,
+        changes: {
+          title: setCustomTitle({ ...bookmark, firstCategory, secondCategory }),
+        },
+      }));
+      await api.batchMove(newBookmarks);
+    }
     message.success('批量修改成功');
     onSuccessCBRef.current?.();
     setModalVisible(false);
@@ -55,7 +68,7 @@ const useBatchEditMarkModal = () => {
         <Form.Item label="所属文件夹" name="dirId">
           <ApiSelect />
         </Form.Item>
-        <Form.Item rules={[{ required: true }]} name="firstCategory" label="一级分类">
+        <Form.Item name="firstCategory" label="一级分类">
           <Select
             onChange={() => form.setFieldValue('secondCategory', undefined)}
             options={toPairs(DayFirstCategoryOptions).map(([key, label]) => ({ value: key, label }))}
@@ -70,7 +83,7 @@ const useBatchEditMarkModal = () => {
               label: DaySecondCategoryOptions[key],
             }));
             return (
-              <Form.Item rules={[{ required: true }]} name="secondCategory" label="二级分类">
+              <Form.Item name="secondCategory" label="二级分类">
                 <Select options={options} />
               </Form.Item>
             );

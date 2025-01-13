@@ -126,6 +126,12 @@ export const moveBookmark = async (id: string, destinationId: string) => {
   return await chrome.bookmarks.move(id, { parentId: destinationId });
 };
 
+export const moveBookmarks = async (records: { id: string; destinationId: string }[]) => {
+  const moveFns = records.map(record => moveBookmark(record.id, record.destinationId));
+  const res = await Promise.allSettled([moveFns]);
+  return res;
+};
+
 export const removeBookmark = async (record: IBookMark) => {
   logger('delete-item', record);
   const res = await deletBookmarkById(record.id);
