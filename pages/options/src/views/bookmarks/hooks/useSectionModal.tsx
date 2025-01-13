@@ -191,7 +191,7 @@ const useSectionModal = () => {
         const desc = CategoryDescOptions[secondCategory] ? `> ${CategoryDescOptions[secondCategory]}` : '';
 
         return `
-## ${DaySecondCategoryOptions[secondCategory]}
+### ${DaySecondCategoryOptions[secondCategory]}
 ${desc}
 
 ${getBookmarkContent(bookmarkList as EditBookmark[])}
