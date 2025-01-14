@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ContainerOutlined, DesktopOutlined, PieChartOutlined } from '@ant-design/icons';
+import { PieChartOutlined } from '@ant-design/icons';
 import type { MenuProps } from 'antd';
 import { Menu } from 'antd';
 import { useNavigate, useLocation } from 'react-router';
@@ -24,10 +24,10 @@ function getItem(
 }
 
 const items: MenuItem[] = [
-  getItem('书签设置', '/setting', <PieChartOutlined />),
+  // getItem('书签设置', '/setting', <PieChartOutlined />),
   getItem('书签管理', '/bookmarks', <PieChartOutlined />),
-  getItem('片段管理', '/sections', <DesktopOutlined />),
-  getItem('日报管理', '/daily-notes', <ContainerOutlined />),
+  // getItem('片段管理', '/sections', <DesktopOutlined />),
+  // getItem('日报管理', '/daily-notes', <ContainerOutlined />),
 
   // getItem('Navigation One', 'sub1', <MailOutlined />, [
   //   getItem('Option 5', '5'),
@@ -105,8 +105,8 @@ const MenuContainer: React.FC = () => {
 
   return (
     <div className="size-full">
-      <div className="flex h-16 items-center justify-center space-x-2 text-4xl text-white">
-        <img src={logo} alt="logo" className="inline h-12 align-middle" /> <span>酷书签</span>
+      <div className="flex h-16 items-center justify-center space-x-2   text-white">
+        <img src={logo} alt="logo" className="inline h-12 align-middle" /> <span className="text-[26px]">酷书签</span>
       </div>
       <Menu
         selectedKeys={[currentRoute.pathname]}

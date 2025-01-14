@@ -30,9 +30,9 @@ const LayoutContainer: React.FC = () => {
         <Content style={{ margin: '24px 16px 0', overflow: 'initial' }}>
           <Routes>
             <Route path="/" element={<Navigate replace to="bookmarks" />}></Route>
-            <Route path="/setting" element={<Setting />}></Route>
+            {/* <Route path="/setting" element={<Setting />}></Route> */}
             <Route path="bookmarks" element={<Bookmarks />}></Route>
-            <Route path="sections" element={<Sections />}></Route>
+            {/* <Route path="sections" element={<Sections />}></Route> */}
             <Route path="*" element={<NotFind />}></Route>
           </Routes>
         </Content>
