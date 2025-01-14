@@ -144,7 +144,7 @@ const SidePanel = () => {
           <Form.Item name="title" label="当前页面标题" rules={[{ required: true, message: '请输入当前页面标题' }]}>
             <Input.TextArea rows={2} />
           </Form.Item>
-          <Form.Item label="优先级" name="priority" initialValue={PriorityEnum.Higher}>
+          <Form.Item label="优先级" name="priority" initialValue={PriorityEnum.Medium}>
             <Select
               options={toPairs(PriorityOptions)
                 .toSorted((a, b) => b[0] - a[0])

@@ -87,7 +87,7 @@ const useEditBookmarkModal = () => {
             options={[...new Set(Object.values(sourceMap))].map(v => ({ value: v, label: v }))}
           />
         </Form.Item>
-        <Form.Item label="优先级" name="priority" initialValue={PriorityEnum.Higher}>
+        <Form.Item label="优先级" name="priority" initialValue={PriorityEnum.Medium}>
           <Select
             options={toPairs(PriorityOptions)
               .toSorted((a, b) => b[0] - a[0])
