@@ -152,17 +152,17 @@ const useSectionModal = () => {
   const [form] = Form.useForm();
   const onSuccessCBRef = useRef<(() => void) | null>(null);
   const saveSection = async () => {
-    const values = await form.validateFields();
-    const sectionData = {
-      list,
-      ...values,
-      sectionId: buildShortUUID(),
-      createdDate: new Date().getTime(),
-    };
-    const res = await api.saveSection({ data: sectionData });
-    if (!(res || '').includes('success')) return;
-    message.success('保存成功');
-    onSuccessCBRef.current?.();
+    // const values = await form.validateFields();
+    // const sectionData = {
+    //   list,
+    //   ...values,
+    //   sectionId: buildShortUUID(),
+    //   createdDate: new Date().getTime(),
+    // };
+    // const res = await api.saveSection({ data: sectionData });
+    // if (!(res || '').includes('success')) return;
+    // message.success('保存成功');
+    // onSuccessCBRef.current?.();
     setVisible(false);
   };
 
@@ -242,13 +242,24 @@ ${getSecondContent(secondCategoryList as EditBookmark[])}
     message.success('复制成功!');
   };
 
+  const onCopySection = async () => {
+    const text = getBookmarkContent(list);
+    // refer: https://stackoverflow.com/questions/400212/how-do-i-copy-to-the-clipboard-in-javascript
+    // https://developer.mozilla.org/en-US/docs/Web/API/Clipboard/writeText
+    const res = await navigator.clipboard.writeText(text);
+    message.success('复制成功!');
+    console.log('res: ', res);
+  };
+
   const Footer = () =>
     mode !== ModeEnum.PREVIEW ? (
       <Space size="small" direction="horizontal">
         <Button type="default" onClick={onCopyAll}>
-          拷贝
+          拷贝为日报
         </Button>
-        <Button type="primary">确定</Button>
+        <Button type="primary" onClick={onCopySection}>
+          拷贝片段
+        </Button>
       </Space>
     ) : null;
 
@@ -256,18 +267,18 @@ ${getSecondContent(secondCategoryList as EditBookmark[])}
     <Modal
       title={mode === ModeEnum.EDIT ? '设置片段' : '片段详情'}
       open={visible}
-      onOk={saveSection}
+      // onOk={saveSection}
       onCancel={() => setVisible(false)}
       maskClosable={false}
       destroyOnClose
       width={800}
       footer={<Footer />}>
       <Form form={form} preserve={false}>
-        {mode === ModeEnum.EDIT && (
+        {/* {mode === ModeEnum.EDIT && (
           <Form.Item label="片段名" name="sectionName" required rules={[{ required: true, message: '请输入片段名' }]}>
             <Input placeholder="请输入片段名" />
           </Form.Item>
-        )}
+        )} */}
         {mode === ModeEnum.EDIT && <DndList items={list} setItems={setList} />}
 
         {mode === ModeEnum.PREVIEW && <DefaultPreveiwList list={list} />}

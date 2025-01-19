@@ -151,8 +151,6 @@ const List = (props: IProps) => {
     pageSizeOptions: [10, 20, 30, 40, 50],
   };
 
-  console.log('list 1111 ==>>> ', list);
-
   return (
     <Table<EditBookmark>
       rowKey="id"
