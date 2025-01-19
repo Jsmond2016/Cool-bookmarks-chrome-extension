@@ -3,8 +3,9 @@ import dayjs from 'dayjs';
 import type { Dayjs } from 'dayjs';
 import './index.less';
 import { sourceMap } from '@extension/utils';
-import { filter, map, pipe } from 'ramda';
+import { filter, map, pipe, toPairs } from 'ramda';
 import { ApiSelect, FormItem } from '@extension/components';
+import { PriorityOptions } from '@extension/constants';
 
 const { RangePicker } = DatePicker;
 
@@ -79,6 +80,15 @@ const Search = ({ setFilters }: SearchProps) => {
                   </Select.Option>
                 ))}
               </Select>
+            </FormItem>
+          </Col>
+          <Col span={6}>
+            <FormItem label="优先级" name="priority">
+              <Select
+                options={toPairs(PriorityOptions)
+                  .toSorted((a, b) => b[0] - a[0])
+                  .map(([key, label]) => ({ value: +key, label }))}
+              />
             </FormItem>
           </Col>
         </Row>

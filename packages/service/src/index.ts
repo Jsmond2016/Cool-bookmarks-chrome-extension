@@ -1,7 +1,7 @@
 import dayjs from 'dayjs';
 import isBetween from 'dayjs/plugin/isBetween';
 import { getCustomTitle, getStorage, setStorage, sourceRender } from '@extension/utils';
-import type { IBookMark, IBookmarkParam } from '@extension/types';
+import type { EditBookmark, IBookmarkParam } from '@extension/types';
 
 dayjs.extend(isBetween);
 
@@ -16,7 +16,6 @@ const addCustomAttributes = list =>
     date: new Date(item.dateAdded).toLocaleDateString(),
     sourceTitle: item.title,
     source: sourceRender(item.url),
-    ...getCustomTitle(item.title),
   }));
 
 /**
@@ -43,10 +42,11 @@ type IFilters = {
 };
 
 const filterFnsMap = {
-  bookmarkName: (item: IBookMark, v: string) => item.title.includes(v),
-  categoryUrl: (item: IBookMark, v: string) => item.url.includes(v),
-  belongToId: (item: IBookMark, v: string) => item.parentId.includes(v),
-  collectDateRange: (item: IBookMark, [pre, after]: [number, number]) =>
+  bookmarkName: (item: EditBookmark, v: string) => item.title.includes(v),
+  priority: (item: EditBookmark, v: number) => item.priority === v,
+  categoryUrl: (item: EditBookmark, v: string) => item.url.includes(v),
+  belongToId: (item: EditBookmark, v: string) => item.parentId.includes(v),
+  collectDateRange: (item: EditBookmark, [pre, after]: [number, number]) =>
     dayjs(item.dateAdded).isBetween(pre, after, null, '[]'),
 };
 /**
@@ -59,13 +59,14 @@ export const queryBookmarksByRecent = async (filters: IFilters) => {
   const { count = 5000, ...restFilters } = filters;
   // const _count = Math.min(count, 1000);
   const bookmarks = await chrome.bookmarks.getRecent(count);
+  const newBookmarks = bookmarks.map(v => ({ ...v, ...getCustomTitle(v.title) }));
 
   const filterFns = Object.keys(restFilters).map(key => ({
     key,
     fn: filterFnsMap[key],
   }));
 
-  const filterBookMarks = bookmarks.filter(item => {
+  const filterBookMarks = newBookmarks.filter(item => {
     return filterFns.every(({ key, fn }) => fn(item, restFilters[key]));
   });
 
@@ -132,13 +133,13 @@ export const moveBookmarks = async (records: { id: string; destinationId: string
   return res;
 };
 
-export const removeBookmark = async (record: IBookMark) => {
+export const removeBookmark = async (record: EditBookmark) => {
   logger('delete-item', record);
   const res = await deletBookmarkById(record.id);
   return res;
 };
 
-export const batchRemove = async (records: IBookMark[]) => {
+export const batchRemove = async (records: EditBookmark[]) => {
   logger('delete-list', records);
   const removeFns = records.map(record => deletBookmarkById(record.id));
   const res = await Promise.all(removeFns);
