@@ -7,8 +7,9 @@ import * as Apis from '@extension/service';
 import { to } from 'await-to-js';
 import { toPairs } from 'ramda';
 import type { EditBookmark } from '@extension/types';
-import type { DayFirstCategoryEnum, DaySecondCategoryEnum } from '@extension/constants';
+import type { DaySecondCategoryEnum } from '@extension/constants';
 import {
+  DayFirstCategoryEnum,
   DirTypeEnum,
   DirTypeOptions,
   PriorityEnum,
@@ -146,6 +147,13 @@ const SidePanel = () => {
           </Form.Item>
           <Form.Item label="优先级" name="priority" initialValue={PriorityEnum.Medium}>
             <Select
+              onChange={value => {
+                if (value === PriorityEnum.Highest) {
+                  form.setFieldValue('firstCategory', DayFirstCategoryEnum.Important);
+                } else {
+                  form.setFieldValue('firstCategory', undefined);
+                }
+              }}
               options={toPairs(PriorityOptions)
                 .toSorted((a, b) => b[0] - a[0])
                 .map(([key, label]) => ({ value: +key, label }))}
@@ -166,7 +174,7 @@ const SidePanel = () => {
                 label: DaySecondCategoryOptions[key],
               }));
               return (
-                <Form.Item rules={[{ required: true }]} name="secondCategory" label="二级分类">
+                <Form.Item name="secondCategory" label="二级分类">
                   <Select options={options} />
                 </Form.Item>
               );

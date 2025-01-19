@@ -1,4 +1,6 @@
 export enum DayFirstCategoryEnum {
+  /** 今日重点 */
+  Important = 'DayImportant',
   /** 今日工作 */
   Work = 'DayWork',
   /** 今日心情  */
@@ -14,6 +16,7 @@ export enum DayFirstCategoryEnum {
 }
 
 export const DayFirstCategoryOrder = [
+  DayFirstCategoryEnum.Important,
   DayFirstCategoryEnum.Work,
   DayFirstCategoryEnum.MotionToday,
   DayFirstCategoryEnum.Article_Recommend,
@@ -23,10 +26,11 @@ export const DayFirstCategoryOrder = [
 ];
 
 export const DayFirstCategoryOptions = {
+  [DayFirstCategoryEnum.Important]: '今日重点',
   [DayFirstCategoryEnum.Work]: '今日工作',
   [DayFirstCategoryEnum.MotionToday]: '今日心情',
   [DayFirstCategoryEnum.Article_Recommend]: '好文推荐',
-  [DayFirstCategoryEnum.Project_Blog]: '项目/博客推荐',
+  [DayFirstCategoryEnum.Project_Blog]: '项目/博客/工具/教程',
   [DayFirstCategoryEnum.Job_Experience_Profession]: '求职/就业/经验/职业规划',
   [DayFirstCategoryEnum.Argument_Gpt_AI]: '讨论 & GPT & AI',
 } as const;
@@ -96,6 +100,7 @@ export const CategoryDescOptions = {
 };
 
 export const FirstBindSecondCategoryRelation = {
+  [DayFirstCategoryEnum.Important]: [DaySecondCategoryEnum.Default],
   [DayFirstCategoryEnum.Article_Recommend]: [
     DaySecondCategoryEnum.Top3,
     DaySecondCategoryEnum.New_Knowledge,
