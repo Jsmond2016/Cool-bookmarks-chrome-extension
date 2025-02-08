@@ -22,6 +22,8 @@
 - 多端同步：支持书签数据持久化存储，多端同步（未来功能）。
 
 
+其他：开发计划，见 [issue](https://github.com/Jsmond2016/Cool-bookmarks-chrome-extension/issues/38)
+
 ## 安装和使用
 
 **安装：**
