@@ -3,8 +3,6 @@ import './layoutContainer.css';
 import { Layout } from 'antd';
 import { Route, Routes, Navigate } from 'react-router';
 import Bookmarks from './views/bookmarks';
-import Setting from './views/setting';
-import Sections from './views/sections';
 import NotFind from './views/not-find';
 
 import MenuContainer from './menu/index';
@@ -26,7 +24,13 @@ const LayoutContainer: React.FC = () => {
         <MenuContainer />
       </Sider>
       <Layout className="site-layout" style={{ marginLeft: 200 }}>
-        <Header style={{ padding: 0 }}>H1-header</Header>
+        <Header className="margin-[0px] text right text-white">
+          <span>
+            <a href="https://github.com/Jsmond2016/Cool-bookmarks-chrome-extension" target="_blank" rel="noreferrer">
+              github
+            </a>
+          </span>
+        </Header>
         <Content style={{ margin: '24px 16px 0', overflow: 'initial' }}>
           <Routes>
             <Route path="/" element={<Navigate replace to="bookmarks" />}></Route>
