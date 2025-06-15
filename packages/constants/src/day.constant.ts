@@ -19,9 +19,13 @@ export enum DayFirstCategoryEnum {
   Web3AndBlockChain = 'DayWeb3AndBlockChain',
   /** 讨论 */
   Argument = 'Argument',
+
+  /** 默认 */
+  Default = 'Default',
 }
 
 export const DayFirstCategoryOrder = [
+  DayFirstCategoryEnum.Default,
   DayFirstCategoryEnum.Important,
   DayFirstCategoryEnum.Work,
   DayFirstCategoryEnum.MotionToday,
@@ -35,6 +39,7 @@ export const DayFirstCategoryOrder = [
 ];
 
 export const DayFirstCategoryOptions = {
+  [DayFirstCategoryEnum.Default]: '默认',
   [DayFirstCategoryEnum.Important]: '今日重点',
   [DayFirstCategoryEnum.Work]: '今日工作',
   [DayFirstCategoryEnum.MotionToday]: '今日心情',
@@ -101,6 +106,7 @@ export const DaySecondCategoryOptions = {
 } as const;
 
 export const CategoryDescOptions = {
+  [DayFirstCategoryEnum.Default]: '默认',
   [DayFirstCategoryEnum.Work]: '问题，原因，解决方式，优化，巧妙实现，新知识',
   [DayFirstCategoryEnum.MotionToday]: '所见所想，有感而发',
   [DayFirstCategoryEnum.Article_Recommend]: '有感好文，专题好文',
@@ -116,6 +122,7 @@ export const CategoryDescOptions = {
 };
 
 export const FirstBindSecondCategoryRelation = {
+  [DayFirstCategoryEnum.Default]: [DaySecondCategoryEnum.Default],
   [DayFirstCategoryEnum.Important]: [DaySecondCategoryEnum.Default],
   [DayFirstCategoryEnum.Article_Recommend]: [
     DaySecondCategoryEnum.Top3,

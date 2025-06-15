@@ -15,6 +15,7 @@ import { DragOutlined, MinusCircleOutlined } from '@ant-design/icons';
 import type { DaySecondCategoryEnum } from '@extension/constants';
 import {
   CategoryDescOptions,
+  DayFirstCategoryEnum,
   DayFirstCategoryOptions,
   DayFirstCategoryOrder,
   DaySecondCategoryOptions,
@@ -160,11 +161,11 @@ export enum ModeEnum {
 //   }
 // ]
 
-type XXXItem = {
+type CoolBookmarkTreeNode = {
   category: string;
   description: string;
   list: EditBookmark[];
-  children: XXXItem[];
+  children: CoolBookmarkTreeNode[];
 };
 
 /**
@@ -185,7 +186,7 @@ type XXXItem = {
    
   */
 const createList = (list: EditBookmark[]) => {
-  const emptyList: XXXItem[] = DayFirstCategoryOrder.map(v => ({
+  const emptyList: CoolBookmarkTreeNode[] = DayFirstCategoryOrder.map(v => ({
     category: v,
     description: CategoryDescOptions[v],
     list: [],
@@ -199,9 +200,9 @@ const createList = (list: EditBookmark[]) => {
       ({
         list: [],
         children: [],
-        category: '',
-        description: '',
-      } as XXXItem);
+        category: DayFirstCategoryEnum.Default,
+        description: CategoryDescOptions[DayFirstCategoryEnum.Default],
+      } as CoolBookmarkTreeNode);
 
     if (!secondCategory) {
       curList.push(item);
@@ -227,6 +228,8 @@ const createList = (list: EditBookmark[]) => {
 
     return pre.map(p => (p.category === firstCategory ? { ...p, children: sortedChildren } : p));
   }, emptyList);
+
+  console.log('newList', newList);
 
   return newList.filter(item => item.list.length > 0 || item.children.length > 0);
 };
@@ -255,7 +258,7 @@ const useSectionModal = () => {
       .join('\n');
   };
 
-  const getSecondContent = (list: XXXItem[]) => {
+  const getSecondContent = (list: CoolBookmarkTreeNode[]) => {
     const text = list.map(item => {
       return `
     
@@ -289,9 +292,9 @@ ${getBookmarkContent(item.list)}
   */
   const transformCopyContent = (list: EditBookmark[]) => {
     console.log('list', list);
-    const xxxList = createList(list);
+    const coolBookmarks = createList(list);
 
-    const content = xxxList.reduce((pre, xxx) => {
+    const content = coolBookmarks.reduce((pre, xxx) => {
       const text = `
 ## ${DayFirstCategoryOptions[xxx.category]}
 > ${xxx.description ?? ''}

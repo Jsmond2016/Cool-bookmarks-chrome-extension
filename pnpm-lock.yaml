@@ -163,9 +163,6 @@ importers:
 
   packages/components:
     dependencies:
-      '@extension/components':
-        specifier: workspace:*
-        version: 'link:'
       '@extension/constants':
         specifier: workspace:*
         version: link:../constants
