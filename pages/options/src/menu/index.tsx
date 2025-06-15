@@ -45,12 +45,6 @@ const getTreeMap = (tree: any) => {
 };
 
 const MenuContainer: React.FC = () => {
-  const [collapsed, setCollapsed] = useState(false);
-
-  const toggleCollapsed = () => {
-    setCollapsed(!collapsed);
-  };
-
   // 编程式跳转路由,利用到 hooks
   const navigateTo = useNavigate();
   // 组件加载完成
@@ -96,7 +90,6 @@ const MenuContainer: React.FC = () => {
         onClick={menuClick}
         mode="inline"
         theme="dark"
-        inlineCollapsed={collapsed}
         items={items}
         style={{ height: 'calc(100% - 64px)' }}
       />

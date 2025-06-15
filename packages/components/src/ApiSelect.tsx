@@ -1,20 +1,21 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import type { TreeSelectProps } from 'antd';
 import { TreeSelect } from 'antd';
 import { getSubTree } from '@extension/service';
 import { useGroupListStore } from '@extension/store';
+import { useMount } from 'ahooks';
 
 type ApiSelectProps = TreeSelectProps;
 
 export default function ApiSelect(props: ApiSelectProps) {
   const { groupList, updateGroupList } = useGroupListStore();
-  useEffect(() => {
+  useMount(() => {
     if (groupList.length === 0) {
       getSubTree().then(bookmarks => {
         updateGroupList(bookmarks);
       });
     }
-  }, []);
+  });
 
   /**
    *
@@ -42,7 +43,7 @@ export default function ApiSelect(props: ApiSelectProps) {
     }
     const rootItem = groupList[0] as chrome.bookmarks.BookmarkTreeNode;
     return transformTreeData(rootItem.children || []);
-  }, [groupList]);
+  }, [JSON.stringify(groupList)]);
 
   return (
     <TreeSelect
