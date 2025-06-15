@@ -3,7 +3,6 @@ import './layoutContainer.css';
 import { Layout } from 'antd';
 import { Route, Routes, Navigate } from 'react-router';
 import Bookmarks from './views/bookmarks';
-import NotFind from './views/not-find';
 
 import MenuContainer from './menu/index';
 
@@ -37,7 +36,7 @@ const LayoutContainer: React.FC = () => {
             {/* <Route path="/setting" element={<Setting />}></Route> */}
             <Route path="bookmarks" element={<Bookmarks />}></Route>
             {/* <Route path="sections" element={<Sections />}></Route> */}
-            <Route path="*" element={<NotFind />}></Route>
+            {/* <Route path="*" element={<NotFind />}></Route> */}
           </Routes>
         </Content>
         <Footer style={{ textAlign: 'center' }}>Ant Design ©2023 Created by Ant UED</Footer>

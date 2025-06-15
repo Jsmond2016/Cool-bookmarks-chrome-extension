@@ -23,26 +23,7 @@ function getItem(
   } as MenuItem;
 }
 
-const items: MenuItem[] = [
-  // getItem('书签设置', '/setting', <PieChartOutlined />),
-  getItem('书签管理', '/bookmarks', <PieChartOutlined />),
-  // getItem('片段管理', '/sections', <DesktopOutlined />),
-  // getItem('日报管理', '/daily-notes', <ContainerOutlined />),
-
-  // getItem('Navigation One', 'sub1', <MailOutlined />, [
-  //   getItem('Option 5', '5'),
-  //   getItem('Option 6', '6'),
-  //   getItem('Option 7', '7'),
-  //   getItem('Option 8', '8'),
-  // ]),
-
-  // getItem('Navigation Two', 'sub2', <AppstoreOutlined />, [
-  //   getItem('Option 9', '9'),
-  //   getItem('Option 10', '10'),
-
-  //   getItem('Submenu', 'sub3', null, [getItem('Option 11', '11'), getItem('Option 12', '12')]),
-  // ]),
-];
+const items: MenuItem[] = [getItem('书签管理', '/bookmarks', <PieChartOutlined />)];
 
 const getNodeMap = (node: any, parent?: string | undefined, leave: number = 0) => {
   node.parent = parent;

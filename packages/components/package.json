@@ -10,8 +10,16 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "ahooks": "^3.8.4",
     "antd": "^5.22.7",
+    "await-to-js": "^3.0.0",
+    "ramda": "^0.30.1",
+    "@extension/store": "workspace:*",
+    "@extension/constants": "workspace:*",
     "@extension/service": "workspace:*",
-    "@extension/store": "workspace:*"
+    "@extension/shared": "workspace:*",
+    "@extension/storage": "workspace:*",
+    "@extension/types": "workspace:*",
+    "@extension/utils": "workspace:*"
   }
 }

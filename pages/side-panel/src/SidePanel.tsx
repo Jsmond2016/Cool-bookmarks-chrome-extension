@@ -1,23 +1,12 @@
-import '@src/SidePanel.css';
+// import '@src/SidePanel.css';
 import { withErrorBoundary, withSuspense } from '@extension/shared';
 import { useEffect } from 'react';
-import { Button, Card, ConfigProvider, Form, Input, Radio, Row, Select, message } from 'antd';
-import { ApiSelect, FormItem } from '@extension/components';
+import { Card, ConfigProvider, Form, message } from 'antd';
+import { EditBookmarkFormContent } from '@extension/components';
 import * as Apis from '@extension/service';
 import { to } from 'await-to-js';
-import { toPairs } from 'ramda';
 import type { EditBookmark } from '@extension/types';
-import type { DaySecondCategoryEnum } from '@extension/constants';
-import {
-  DayFirstCategoryEnum,
-  DirTypeEnum,
-  DirTypeOptions,
-  PriorityEnum,
-  PriorityOptions,
-  DayFirstCategoryOptions,
-  FirstBindSecondCategoryRelation,
-  DaySecondCategoryOptions,
-} from '@extension/constants';
+
 import { getCustomTitle } from '@extension/utils';
 
 const SidePanel = () => {
@@ -114,7 +103,10 @@ const SidePanel = () => {
           },
         }}>
         {contextHolder}
-        <Form form={form} preserve={false} layout="vertical">
+
+        <EditBookmarkFormContent form={form} onSave={handleSave} mode="create" />
+
+        {/* <Form form={form} preserve={false} layout="vertical">
           <Form.Item rules={[{ required: true }]} label="文件夹选项" name="dirType" initialValue={DirTypeEnum.Exist}>
             <Radio.Group
               onChange={() => form.setFieldValue('newDir', undefined)}
@@ -191,7 +183,7 @@ const SidePanel = () => {
               保存
             </Button>
           </Row>
-        </Form>
+        </Form> */}
       </ConfigProvider>
     </Card>
   );

@@ -163,15 +163,42 @@ importers:
 
   packages/components:
     dependencies:
+      '@extension/components':
+        specifier: workspace:*
+        version: 'link:'
+      '@extension/constants':
+        specifier: workspace:*
+        version: link:../constants
       '@extension/service':
         specifier: workspace:*
         version: link:../service
+      '@extension/shared':
+        specifier: workspace:*
+        version: link:../shared
+      '@extension/storage':
+        specifier: workspace:*
+        version: link:../storage
       '@extension/store':
         specifier: workspace:*
         version: link:../store
+      '@extension/types':
+        specifier: workspace:*
+        version: link:../types
+      '@extension/utils':
+        specifier: workspace:*
+        version: link:../utils
+      ahooks:
+        specifier: ^3.8.4
+        version: 3.8.4(react@18.3.1)
       antd:
         specifier: ^5.22.7
         version: 5.22.7(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      await-to-js:
+        specifier: ^3.0.0
+        version: 3.0.0
+      ramda:
+        specifier: ^0.30.1
+        version: 0.30.1
 
   packages/constants: {}
 
