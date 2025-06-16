@@ -195,32 +195,41 @@ const createList = (list: EditBookmark[]) => {
   const newList = list.reduce((pre, item) => {
     const { firstCategory, secondCategory } = item;
 
-    const { list: curList, children: curChidren } =
-      pre.find(v => v.category === firstCategory) ||
-      ({
-        list: [],
-        children: [],
-        category: DayFirstCategoryEnum.Default,
-        description: CategoryDescOptions[DayFirstCategoryEnum.Default],
-      } as CoolBookmarkTreeNode);
+    const defaultFirstCategoryItem: CoolBookmarkTreeNode = {
+      category: DayFirstCategoryEnum.Default,
+      description: CategoryDescOptions[DayFirstCategoryEnum.Default],
+      list: [],
+      children: [],
+    };
+
+    let { list: curList, children: curChildren } = defaultFirstCategoryItem;
+    if (firstCategory) {
+      const matchedCategoryObj = pre.find(v => v.category === firstCategory);
+      if (!matchedCategoryObj) {
+        throw Error(`找不到对应的一级分类 ${firstCategory}`);
+      }
+      const { list, children } = matchedCategoryObj;
+      curList = list;
+      curChildren = children;
+    }
 
     if (!secondCategory) {
       curList.push(item);
       return pre.map(p => (p.category === firstCategory ? { ...p, list: curList } : p));
     }
 
-    if (curChidren.length === 0 || !curChidren.find(v => v.category === secondCategory)) {
-      curChidren.push({
+    if (curChildren.length === 0 || !curChildren.find(v => v.category === secondCategory)) {
+      curChildren.push({
         category: secondCategory,
         description: CategoryDescOptions[item.secondCategory],
         list: [item],
         children: [],
       });
     } else {
-      curChidren.find(v => v.category === secondCategory)?.list.push(item);
+      curChildren.find(v => v.category === secondCategory)?.list.push(item);
     }
 
-    const sortedChildren = curChidren.sort(
+    const sortedChildren = curChildren.sort(
       (a, b) =>
         DaySecondCategoryOrder.indexOf(a.category as DaySecondCategoryEnum) -
         DaySecondCategoryOrder.indexOf(b.category as DaySecondCategoryEnum),

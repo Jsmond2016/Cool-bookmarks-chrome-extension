@@ -81,13 +81,13 @@ const List = (props: IProps) => {
     {
       title: '一级分类',
       dataIndex: 'firstCategory',
-      width: 80,
+      width: 120,
       render: v => DayFirstCategoryOptions[v],
     },
     {
       title: '二级分类',
       dataIndex: 'secondCategory',
-      width: 80,
+      width: 120,
       render: v => DaySecondCategoryOptions[v],
     },
     {
