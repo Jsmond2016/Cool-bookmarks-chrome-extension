@@ -1,6 +1,6 @@
 import React from 'react';
 import type { FormInstance } from 'antd';
-import { Button, Form, Input, Radio, Row, Select } from 'antd';
+import { Button, Form, Input, Radio, Row, Select, Tooltip } from 'antd';
 import ApiSelect from './ApiSelect';
 import { toPairs } from 'ramda';
 import type { EditBookmark } from '@extension/types';
@@ -14,6 +14,7 @@ import {
   DayFirstCategoryOptions,
   FirstBindSecondCategoryRelation,
   DaySecondCategoryOptions,
+  CategoryDescOptions,
 } from '@extension/constants';
 
 type EditBookmarkFormContentProps = {
@@ -83,8 +84,14 @@ const EditBookmarkFormContent = ({
       </Form.Item>
       <Form.Item rules={[{ required: true }]} name="firstCategory" label="一级分类">
         <Select
+          showSearch
+          optionFilterProp="text"
           onChange={() => form.setFieldValue('secondCategory', undefined)}
-          options={toPairs(DayFirstCategoryOptions).map(([key, label]) => ({ value: key, label }))}
+          options={toPairs(DayFirstCategoryOptions).map(([key, label]) => ({
+            value: key,
+            label: <Tooltip title={CategoryDescOptions[key] || '默认'}>{label}</Tooltip>,
+            text: label,
+          }))}
         />
       </Form.Item>
       <Form.Item noStyle shouldUpdate={(pre, cur) => pre.firstCategory !== cur.firstCategory}>
@@ -93,11 +100,13 @@ const EditBookmarkFormContent = ({
           const bindKeyEnums = FirstBindSecondCategoryRelation[firstId] || [];
           const options = bindKeyEnums.map((key: DaySecondCategoryEnum) => ({
             value: key,
-            label: DaySecondCategoryOptions[key],
+            text: DaySecondCategoryOptions[key],
+            label: <Tooltip title={CategoryDescOptions[key] || '默认'}>{DaySecondCategoryOptions[key]}</Tooltip>,
           }));
+          console.log('options-2', options);
           return (
             <Form.Item name="secondCategory" label="二级分类">
-              <Select options={options} />
+              <Select options={options} showSearch optionFilterProp="text" />
             </Form.Item>
           );
         }}

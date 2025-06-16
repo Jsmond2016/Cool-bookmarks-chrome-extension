@@ -43,7 +43,7 @@ export const DayFirstCategoryOptions = {
   [DayFirstCategoryEnum.Important]: '今日重点',
   [DayFirstCategoryEnum.Work]: '今日工作',
   [DayFirstCategoryEnum.MotionToday]: '今日心情',
-  [DayFirstCategoryEnum.Article_Recommend]: '好文推荐',
+  [DayFirstCategoryEnum.Article_Recommend]: '好文推荐/Top3/新知识/英文推荐/专题/其他好文',
   [DayFirstCategoryEnum.Project_Blog]: '项目/博客/工具/教程',
   [DayFirstCategoryEnum.Job_Experience_Profession]: '求职/就业/经验/职业规划',
   [DayFirstCategoryEnum.AI_GPT]: 'AI & GPT',
@@ -107,18 +107,27 @@ export const DaySecondCategoryOptions = {
 
 export const CategoryDescOptions = {
   [DayFirstCategoryEnum.Default]: '默认',
+  [DayFirstCategoryEnum.Important]: '认为是今日重要的内容-时事热点',
   [DayFirstCategoryEnum.Work]: '问题，原因，解决方式，优化，巧妙实现，新知识',
   [DayFirstCategoryEnum.MotionToday]: '所见所想，有感而发',
   [DayFirstCategoryEnum.Article_Recommend]: '有感好文，专题好文',
   [DayFirstCategoryEnum.Project_Blog]: '值得学习 作者/项目/工具等',
   [DayFirstCategoryEnum.Job_Experience_Profession]: '求职, 就业, 经验, 推荐公司, 职业规划',
   [DayFirstCategoryEnum.AI_GPT]: '就某个技术点，和 gpt 讨论，得到有用的信息；或者 AI 相关',
+  [DayFirstCategoryEnum.Backend]: '后端知识-Java-Golang-数据库等后端相关的知识点',
+  [DayFirstCategoryEnum.Web3AndBlockChain]: 'Web3/区块链相关的内容和知识',
+  [DayFirstCategoryEnum.Argument]: '值得讨论的内容，比如技术相关/职业规划/工作方法/生活哲理',
 
-  [DaySecondCategoryEnum.New_Knowledge]: '库更新，未知的知识点等',
+  [DaySecondCategoryEnum.Top3]: '今天看到的最好的，收益最大的3-5篇文章',
+  [DaySecondCategoryEnum.New_Knowledge]: '前后端的库更新，新特点，未知的知识点等',
+  [DaySecondCategoryEnum.Blog_English]: '有意思的英文博客站点或者内容',
   [DaySecondCategoryEnum.Topics]: 'CSS, ts, 微前端，nest, next, 性能优化, leetcode, ... 2 篇同类文章起收录',
-  [DaySecondCategoryEnum.Tools]: '有用的小工具',
-  [DaySecondCategoryEnum.Project]: '用于学习参考的开源项目，github，预览网站等',
+  [DaySecondCategoryEnum.Other_Articles]: '其他没有分类的文章和内容',
+  [DaySecondCategoryEnum.Blog]: '优秀的博客站点/up主/博主等',
+  [DaySecondCategoryEnum.Project]: '有意思有价值的开源项目，github，预览网站等',
   [DaySecondCategoryEnum.Tutorials]: '关于特定技能点或者技术栈的学习教程',
+  [DaySecondCategoryEnum.Tools]: '有用的小工具，不论前后端/开发工具/效率工具/种草推荐等',
+  [DaySecondCategoryEnum.FrontTools]: '有用的前端开发工具等',
 };
 
 export const FirstBindSecondCategoryRelation = {
