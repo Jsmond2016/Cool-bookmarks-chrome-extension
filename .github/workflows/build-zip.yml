@@ -40,7 +40,7 @@ jobs:
         run: pnpm build
 
       - name: Zip dist folder
-        run: zip -r dist.zip dist
+        run: zip -r cool_bookmark_ext_${{ github.ref_name }}.zip dist
 
       - name: Create Release
         id: create_release
@@ -60,6 +60,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./dist.zip
-          asset_name: dist.zip
+          asset_path: ./cool_bookmark_ext_${{ github.ref_name }}.zip
+          asset_name: cool_bookmark_ext_${{ github.ref_name }}.zip
           asset_content_type: application/zip
