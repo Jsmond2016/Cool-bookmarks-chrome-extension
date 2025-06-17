@@ -45,7 +45,7 @@ export const DayFirstCategoryOptions = {
   [DayFirstCategoryEnum.MotionToday]: '今日心情',
   [DayFirstCategoryEnum.Article_Recommend]: '好文推荐/Top3/新知识/英文推荐/专题/其他好文',
   [DayFirstCategoryEnum.Project_Blog]: '项目/博客/工具/教程',
-  [DayFirstCategoryEnum.Job_Experience_Profession]: '求职/就业/经验/职业规划',
+  [DayFirstCategoryEnum.Job_Experience_Profession]: '求职/副业/经验/程序员转行',
   [DayFirstCategoryEnum.AI_GPT]: 'AI & GPT',
   [DayFirstCategoryEnum.Backend]: '后端-Java-Golang等',
   [DayFirstCategoryEnum.Web3AndBlockChain]: 'Web3 & 区块链',
@@ -75,10 +75,25 @@ export enum DaySecondCategoryEnum {
   FrontTools = 'DayFrontTools',
   /** default */
   Default = 'DayDefault',
+
+  GoodArticle = 'GoodArticle',
+  Job = 'Job' /** 求职 */,
+  SideJob = 'SideJob' /** 副业 */,
+  WorkExperience = 'WorkExperience' /** 工作经验 */,
+  ChangeJob = 'ChangeJob' /** 程序员转行 */,
+
+  Java = 'Java',
+  Golang = 'Golang',
+  OtherBackendSection = 'OtherBackendSection',
+
+  Web3 = 'Web3',
+  BlockChain = 'BlockChain',
 }
 
 export const DaySecondCategoryOrder = [
+  DaySecondCategoryEnum.Default,
   DaySecondCategoryEnum.Top3,
+  DaySecondCategoryEnum.GoodArticle,
   DaySecondCategoryEnum.New_Knowledge,
   DaySecondCategoryEnum.Blog_English,
   DaySecondCategoryEnum.Topics,
@@ -88,20 +103,45 @@ export const DaySecondCategoryOrder = [
   DaySecondCategoryEnum.Tools,
   DaySecondCategoryEnum.Tutorials,
   DaySecondCategoryEnum.FrontTools,
-  DaySecondCategoryEnum.Default,
+
+  DaySecondCategoryEnum.GoodArticle,
+  DaySecondCategoryEnum.Job,
+  DaySecondCategoryEnum.SideJob,
+  DaySecondCategoryEnum.WorkExperience,
+  DaySecondCategoryEnum.ChangeJob,
+  DaySecondCategoryEnum.Java,
+  DaySecondCategoryEnum.Golang,
+  DaySecondCategoryEnum.OtherBackendSection,
+
+  DaySecondCategoryEnum.Web3,
+  DaySecondCategoryEnum.BlockChain,
 ];
 
 export const DaySecondCategoryOptions = {
   [DaySecondCategoryEnum.Top3]: 'TOP3',
+  [DaySecondCategoryEnum.GoodArticle]: '好文推荐',
   [DaySecondCategoryEnum.New_Knowledge]: '新知识',
   [DaySecondCategoryEnum.Blog_English]: '英文推荐',
   [DaySecondCategoryEnum.Topics]: '专题',
   [DaySecondCategoryEnum.Other_Articles]: '其他好文',
-  [DaySecondCategoryEnum.Blog]: '优秀博客推荐',
+
   [DaySecondCategoryEnum.Project]: '项目',
+  [DaySecondCategoryEnum.Blog]: '优秀博客推荐',
   [DaySecondCategoryEnum.Tools]: '工具',
-  [DaySecondCategoryEnum.Tutorials]: '教程',
   [DaySecondCategoryEnum.FrontTools]: '前端工具库',
+  [DaySecondCategoryEnum.Tutorials]: '教程',
+
+  [DaySecondCategoryEnum.Job]: '求职',
+  [DaySecondCategoryEnum.SideJob]: '副业',
+  [DaySecondCategoryEnum.WorkExperience]: '工作经验',
+  [DaySecondCategoryEnum.ChangeJob]: '程序员转行',
+  [DaySecondCategoryEnum.Java]: 'Java后端',
+  [DaySecondCategoryEnum.Golang]: 'Golang后端',
+  [DaySecondCategoryEnum.OtherBackendSection]: '其他后端相关',
+
+  [DaySecondCategoryEnum.Web3]: 'Web3相关',
+  [DaySecondCategoryEnum.BlockChain]: '区块链相关',
+
   [DaySecondCategoryEnum.Default]: '默认',
 } as const;
 
@@ -128,6 +168,19 @@ export const CategoryDescOptions = {
   [DaySecondCategoryEnum.Tutorials]: '关于特定技能点或者技术栈的学习教程',
   [DaySecondCategoryEnum.Tools]: '有用的小工具，不论前后端/开发工具/效率工具/种草推荐等',
   [DaySecondCategoryEnum.FrontTools]: '有用的前端开发工具等',
+
+  [DaySecondCategoryEnum.Job]: '求职，失业，市场行情',
+  [DaySecondCategoryEnum.SideJob]: '副业，赚钱之道',
+  [DaySecondCategoryEnum.WorkExperience]: '他人工作经验分享，提效技巧，管理经验等',
+  [DaySecondCategoryEnum.ChangeJob]: '程序员转行',
+  [DaySecondCategoryEnum.Java]: 'Java后端相关知识点',
+  [DaySecondCategoryEnum.Golang]: 'Golang后端知识点',
+  [DaySecondCategoryEnum.OtherBackendSection]: '其他后端相关，数据库，redis等',
+
+  [DaySecondCategoryEnum.Web3]: 'Web3相关',
+  [DaySecondCategoryEnum.BlockChain]: '区块链相关',
+
+  [DaySecondCategoryEnum.Default]: '默认',
 };
 
 export const FirstBindSecondCategoryRelation = {
@@ -135,6 +188,7 @@ export const FirstBindSecondCategoryRelation = {
   [DayFirstCategoryEnum.Important]: [DaySecondCategoryEnum.Default],
   [DayFirstCategoryEnum.Article_Recommend]: [
     DaySecondCategoryEnum.Top3,
+    DaySecondCategoryEnum.GoodArticle,
     DaySecondCategoryEnum.New_Knowledge,
     DaySecondCategoryEnum.Blog_English,
     DaySecondCategoryEnum.Topics,
@@ -148,9 +202,24 @@ export const FirstBindSecondCategoryRelation = {
   ],
   [DayFirstCategoryEnum.Work]: [DaySecondCategoryEnum.Default],
   [DayFirstCategoryEnum.MotionToday]: [DaySecondCategoryEnum.Default],
-  [DayFirstCategoryEnum.Job_Experience_Profession]: [DaySecondCategoryEnum.Default],
+  [DayFirstCategoryEnum.Job_Experience_Profession]: [
+    DaySecondCategoryEnum.Job,
+    DaySecondCategoryEnum.SideJob,
+    DaySecondCategoryEnum.WorkExperience,
+    DaySecondCategoryEnum.ChangeJob,
+    DaySecondCategoryEnum.Default,
+  ],
   [DayFirstCategoryEnum.AI_GPT]: [DaySecondCategoryEnum.Default],
-  [DayFirstCategoryEnum.Backend]: [DaySecondCategoryEnum.Default],
-  [DayFirstCategoryEnum.Web3AndBlockChain]: [DaySecondCategoryEnum.Default],
+  [DayFirstCategoryEnum.Backend]: [
+    DaySecondCategoryEnum.Java,
+    DaySecondCategoryEnum.Golang,
+    DaySecondCategoryEnum.OtherBackendSection,
+    DaySecondCategoryEnum.Default,
+  ],
+  [DayFirstCategoryEnum.Web3AndBlockChain]: [
+    DaySecondCategoryEnum.Web3,
+    DaySecondCategoryEnum.BlockChain,
+    DaySecondCategoryEnum.Default,
+  ],
   [DayFirstCategoryEnum.Argument]: [DaySecondCategoryEnum.Default],
 };
